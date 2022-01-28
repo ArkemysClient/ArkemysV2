@@ -1,0 +1,43 @@
+package com.rastiq.arkemys.mixins.client.renderer.entity;
+
+import com.rastiq.arkemys.config.ModuleConfig;
+import com.rastiq.arkemys.features.modules.OldAnimationsModule;
+import com.rastiq.arkemys.gui.utils.GuiUtils;
+import org.spongepowered.asm.mixin.*;
+import net.minecraft.client.renderer.entity.*;
+import com.rastiq.arkemys.config.*;
+import com.rastiq.arkemys.features.modules.*;
+import com.rastiq.arkemys.features.*;
+import org.spongepowered.asm.mixin.injection.*;
+import com.rastiq.arkemys.gui.utils.*;
+
+@Mixin({ RendererLivingEntity.class })
+public class MixinRendererLivingEntity
+{
+    @ModifyArg(method = { "renderLayers" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RendererLivingEntity;setBrightness(Lnet/minecraft/entity/EntityLivingBase;FZ)Z"))
+    private boolean combineTextures(final boolean shouldCombine) {
+        return (ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) && OldAnimationsModule.INSTANCE.damage.getBoolean()) || shouldCombine;
+    }
+    
+    @ModifyArg(method = { "setBrightness" }, at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 0))
+    private float setRed(final float redIn) {
+        float red = (ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) && OldAnimationsModule.INSTANCE.damage.getBoolean()) ? 0.7f : redIn;
+        red = (ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) ? ((OldAnimationsModule.INSTANCE.hitColor.getColor() >> 16 & 0xFF) / 255.0f) : red);
+        return red;
+    }
+    
+    @ModifyArg(method = { "setBrightness" }, at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 1))
+    private float setGreen(final float greenIn) {
+        return ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) ? GuiUtils.rgbToGl(OldAnimationsModule.INSTANCE.hitColor.getColor() >> 8 & 0xFF) : greenIn;
+    }
+    
+    @ModifyArg(method = { "setBrightness" }, at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 2))
+    private float setBlue(final float blueIn) {
+        return ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) ? GuiUtils.rgbToGl(OldAnimationsModule.INSTANCE.hitColor.getColor() & 0xFF) : blueIn;
+    }
+    
+    @ModifyArg(method = { "setBrightness" }, at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 3))
+    private float setAlpha(final float alphaIn) {
+        return ModuleConfig.INSTANCE.isEnabled(OldAnimationsModule.INSTANCE) ? GuiUtils.rgbToGl(OldAnimationsModule.INSTANCE.hitColor.getColor() >> 24 & 0xFF) : alphaIn;
+    }
+}

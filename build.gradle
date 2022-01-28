@@ -21,16 +21,16 @@ apply plugin: 'net.minecraftforge.gradle.tweaker-client'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'java'
 
-version = "1.2.0-BETA"
-group= "me.kaimson"
-archivesBaseName = "Melon Client"
+version = "2.0.0-BETA"
+group= "com.rastiq"
+archivesBaseName = "Arkemys Client"
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 minecraft {
     version = "1.8.9"
-    tweakClass = "me.kaimson.melonclient.launch.MelonClientTweaker"
+    tweakClass = "com.rastiq.arkemys.launch.ArkemysClientTweaker"
     runDir = "run"
     mappings = "stable_22"
     clientJvmArgs = ["-XX:-DisableExplicitGC"]
@@ -72,7 +72,7 @@ dependencies {
 
 mixin {
     defaultObfuscationEnv = "notch"
-    add sourceSets.main, "mixins.melonclient.refmap.json"
+    add sourceSets.main, "mixins.arkemys.refmap.json"
 }
 
 processResources {
@@ -96,8 +96,8 @@ jar {
 
 jar {
     manifest.attributes(
-            "MixinConfigs": 'mixins.melonclient.json',
-            "TweakClass": 'me.kaimson.melonclient.launch.MelonClientTweaker',
+            "MixinConfigs": 'mixins.arkemys.json',
+            "TweakClass": 'com.rastiq.arkemys.launch.ArkemysClientTweaker',
             "TweakOrder": 0,
             "Manifest-Version": 1.0
     )
