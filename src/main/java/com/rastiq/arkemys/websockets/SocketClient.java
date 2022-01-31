@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 
 public class SocketClient {
 
-    public static final Client client = new Client("localhost", 80);
+    public static final Client client = new Client("64.225.100.209", 80);
 
     public static void main(String[] args) {
 

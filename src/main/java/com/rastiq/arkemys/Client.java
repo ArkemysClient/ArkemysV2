@@ -62,8 +62,6 @@ public class Client
         ModuleManager.INSTANCE.init();
         SplashProgress.setProgress(8, "Initialisation de la config...");
         ConfigManager.INSTANCE.loadAll();
-        SplashProgress.setProgress(9, "Chargement des cosmétiques...");
-        new Thread(CosmeticManager::init, "Cosmetic Fetcher").start();
     }
     
     public void onKeyPress(final int keycode) {
@@ -76,14 +74,12 @@ public class Client
         if (mc.thePlayer != null && mc.theWorld != null) {
             if (!hasSent) {
                 info(SocketClient.client.request("start", mc.thePlayer.getGameProfile().getName() + ":true"));
-                info(SocketClient.client.request("start", "RASTIQ" + ":true"));
                 keepAliveTimer = new Timer();
                 keepAliveTimer.reset();
                 hasSent = true;
             }
             if(keepAliveTimer.hasTimeElapsed(30000, true)) {
                 info(SocketClient.client.request("keepAlive", mc.thePlayer.getGameProfile().getName()));
-                info(SocketClient.client.request("keepAlive", "RASTIQ"));
             }
         }
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
