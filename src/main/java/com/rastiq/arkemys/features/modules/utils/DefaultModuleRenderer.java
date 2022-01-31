@@ -29,13 +29,13 @@ public abstract class DefaultModuleRenderer extends IModuleRenderer
     
     public DefaultModuleRenderer(final String displayName, final int textureIndex) {
         super(displayName, textureIndex);
-        new Setting(this, "General Options");
-        this.background = new Setting(this, "Background").setDefault(true);
-        this.backgroundColor = new Setting(this, "Background Color").setDefault(new Color(0, 0, 0, 75).getRGB(), 0);
-        this.backgroundWidth = new Setting(this, "Background Width").setDefault(5).setRange(2, 20, 1);
-        this.backgroundHeight = new Setting(this, "Background Height").setDefault(5).setRange(2, 12, 1);
-        this.textShadow = new Setting(this, "Text Shadow").setDefault(false);
-        this.textColor = new Setting(this, "Text Color").setDefault(new Color(255, 255, 255).getRGB(), 0);
+        new Setting(this, "Options générales");
+        this.background = new Setting(this, "Arrière plan").setDefault(true);
+        this.backgroundColor = new Setting(this, "Couleur d'arrière-plan").setDefault(new Color(0, 0, 0, 75).getRGB(), 0);
+        this.backgroundWidth = new Setting(this, "Largeur").setDefault(5).setRange(2, 20, 1);
+        this.backgroundHeight = new Setting(this, "Hauteur").setDefault(5).setRange(2, 12, 1);
+        this.textShadow = new Setting(this, "Ombre des textes").setDefault(false);
+        this.textColor = new Setting(this, "Couleur des textes").setDefault(new Color(255, 255, 255).getRGB(), 0);
     }
     
     @Override

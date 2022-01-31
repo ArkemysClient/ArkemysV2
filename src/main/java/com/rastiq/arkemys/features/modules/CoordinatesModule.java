@@ -14,7 +14,7 @@ public class CoordinatesModule extends DefaultModuleRenderer
     private int height;
     
     public CoordinatesModule() {
-        super("Coordinates");
+        super("Coordonnées");
     }
     
     @Override

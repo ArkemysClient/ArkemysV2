@@ -21,14 +21,14 @@ public class BlockOverlayModule extends Module
     
     public BlockOverlayModule() {
         super("Block Overlay", 14);
-        new Setting(this, "Outline Options");
-        this.outlineColor = new Setting(this, "Color").setDefault(new Color(0, 0, 0, 100).getRGB(), 0);
-        this.outlineWidth = new Setting(this, "Width").setDefault(2.0f).setRange(0.5f, 5.0f, 0.5f);
-        this.ignoreDepth = new Setting(this, "Ignore Depth").setDefault(false);
+        new Setting(this, "Options de contour");
+        this.outlineColor = new Setting(this, "Couleur").setDefault(new Color(0, 0, 0, 100).getRGB(), 0);
+        this.outlineWidth = new Setting(this, "Largeur").setDefault(2.0f).setRange(0.5f, 5.0f, 0.5f);
+        this.ignoreDepth = new Setting(this, "Ignorer la profondeur").setDefault(false);
         this.persistent = new Setting(this, "Persistent").setDefault(false);
-        new Setting(this, "Fill Options");
-        this.fill = new Setting(this, "Fill").setDefault(false);
-        this.fillColor = new Setting(this, "Fill Color").setDefault(new Color(0, 0, 0, 150).getRGB(), 0);
+        new Setting(this, "Options de remplissage");
+        this.fill = new Setting(this, "Remplir").setDefault(false);
+        this.fillColor = new Setting(this, "Couleur de remplissage").setDefault(new Color(0, 0, 0, 150).getRGB(), 0);
         BlockOverlayModule.INSTANCE = this;
     }
     

@@ -25,10 +25,10 @@ public class PackOverlayModule extends IModuleRenderer
     
     public PackOverlayModule() {
         super("Pack Overlay");
-        new Setting(this, "Pack Options");
-        this.showIcon = new Setting(this, "Show icon").setDefault(true);
-        this.showDescription = new Setting(this, "Show description").setDefault(true);
-        this.showBackground = new Setting(this, "Show background").setDefault(true);
+        new Setting(this, "Options de pack");
+        this.showIcon = new Setting(this, "Montrer l'icône").setDefault(true);
+        this.showDescription = new Setting(this, "Montrer la description").setDefault(true);
+        this.showBackground = new Setting(this, "Montrer l'arrière-plan").setDefault(true);
     }
     
     @Override

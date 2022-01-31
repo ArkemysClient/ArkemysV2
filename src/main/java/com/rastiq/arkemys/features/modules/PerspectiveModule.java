@@ -23,9 +23,9 @@ public class PerspectiveModule extends Module
     
     public PerspectiveModule() {
         super("Perspective", 22);
-        new Setting(this, "Freelook Options");
+        new Setting(this, "Options Freelook");
         this.freelook = new Setting(this, "Keybind", "freelook.keybind").setDefault(new KeyBinding(47));
-        new Setting(this, "Behind You Options");
+        new Setting(this, "Options Derrière Toi");
         this.behindYou = new Setting(this, "Keybind", "behindyou.keybind").setDefault(new KeyBinding(56));
         PerspectiveModule.INSTANCE = this;
     }

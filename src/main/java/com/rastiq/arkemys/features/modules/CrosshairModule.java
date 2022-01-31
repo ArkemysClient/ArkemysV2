@@ -25,17 +25,17 @@ public class CrosshairModule extends Module
     
     public CrosshairModule() {
         super("Crosshair", 14);
-        new Setting(this, "Style Options");
-        this.crosshair = new Setting(this, "Mode").setDefault(0).setRange("Vanilla", "Cross", "Circle", "Arrow");
-        this.color = new Setting(this, "Color").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
-        this.size = new Setting(this, "Size").setDefault(16).setRange(2, 24, 1);
-        this.gap = new Setting(this, "Gap").setDefault(4).setRange(0, 32, 1);
-        this.thickness = new Setting(this, "Thickness").setDefault(2.0f).setRange(0.5f, 5.0f, 0.5f);
-        new Setting(this, "Dot Options");
-        this.dot = new Setting(this, "Dot").setDefault(false);
-        this.dotColor = new Setting(this, "Dot Color").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
-        new Setting(this, "Other");
-        this.showInThird = new Setting(this, "Show in third person view").setDefault(false);
+        new Setting(this, "Options de style");
+        this.crosshair = new Setting(this, "Mode").setDefault(0).setRange("Vanilla", "Croix", "Cercle", "Flèche");
+        this.color = new Setting(this, "Couleur").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
+        this.size = new Setting(this, "Taille").setDefault(16).setRange(2, 24, 1);
+        this.gap = new Setting(this, "Bord").setDefault(4).setRange(0, 32, 1);
+        this.thickness = new Setting(this, "Épaisseur").setDefault(2.0f).setRange(0.5f, 5.0f, 0.5f);
+        new Setting(this, "Options de point");
+        this.dot = new Setting(this, "Point").setDefault(false);
+        this.dotColor = new Setting(this, "Couleur de point").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
+        new Setting(this, "Autre");
+        this.showInThird = new Setting(this, "Montrer à la 3ème personne").setDefault(false);
         CrosshairModule.INSTANCE = this;
     }
     

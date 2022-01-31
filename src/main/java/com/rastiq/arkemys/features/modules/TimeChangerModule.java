@@ -12,8 +12,8 @@ public class TimeChangerModule extends Module
     
     public TimeChangerModule() {
         super("Time Changer");
-        new Setting(this, "Time Options");
-        this.time = new Setting(this, "Time").setDefault(0).setRange("Vanilla", "Day", "Sunset", "Night");
+        new Setting(this, "Options de temps");
+        this.time = new Setting(this, "Temps").setDefault(0).setRange("Vanilla", "Jour", "Coucher de soleil", "Nuit");
         TimeChangerModule.INSTANCE = this;
     }
 }

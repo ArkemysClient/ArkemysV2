@@ -31,7 +31,7 @@ public class ToggleSprintModule extends DefaultModuleRenderer
     
     @Override
     public Object getDummy() {
-        return "Sprinting (Toggled)";
+        return "Sprint (Toggle)";
     }
     
     public void updateMovement() {
@@ -78,14 +78,14 @@ public class ToggleSprintModule extends DefaultModuleRenderer
         }
         else if (this.toggled) {
             if (isSprintHeld) {
-                displayText = "Sprinting (Key Held)";
+                displayText = "Sprint (Touche maintenue)";
             }
             else {
-                displayText = "Sprinting (Toggled)";
+                displayText = "Sprint (Toggle)";
             }
         }
         else if (isSprinting) {
-            displayText = "Sprinting (Vanilla)";
+            displayText = "Sprint (Vanilla)";
         }
         return displayText;
     }

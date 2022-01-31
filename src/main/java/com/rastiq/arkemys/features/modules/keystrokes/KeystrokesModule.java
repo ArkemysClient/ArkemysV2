@@ -31,15 +31,15 @@ public class KeystrokesModule extends IModuleRenderer
     
     public KeystrokesModule() {
         super("Keystrokes");
-        new Setting(this, "Box Options");
-        this.boxColor = new Setting(this, "Box Color").setDefault(new Color(0, 0, 0, 50).getRGB(), 0);
-        this.boxPressedColor = new Setting(this, "Box Pressed Color").setDefault(new Color(255, 255, 255, 100).getRGB(), 0);
-        this.boxSize = new Setting(this, "Box Size").setDefault(20.0f).setRange(10.0f, 30.0f, 0.1f).onValueChanged(setting -> this.builder = this.createLayout());
-        this.showCPS = new Setting(this, "Show CPS").setDefault(true);
-        this.textColor = new Setting(this, "Text Color").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
-        this.pressedTextColor = new Setting(this, "Pressed Text Color").setDefault(new Color(0, 0, 0, 255).getRGB(), 0);
-        this.outline = new Setting(this, "Outline").setDefault(false);
-        this.outlineColor = new Setting(this, "Outline Color").setDefault(new Color(0, 0, 0, 100).getRGB(), 0);
+        new Setting(this, "Options de boîte");
+        this.boxColor = new Setting(this, "Couleur de boîte").setDefault(new Color(0, 0, 0, 50).getRGB(), 0);
+        this.boxPressedColor = new Setting(this, "Couleur de boîte appuyée").setDefault(new Color(255, 255, 255, 100).getRGB(), 0);
+        this.boxSize = new Setting(this, "Taille de boîte").setDefault(20.0f).setRange(10.0f, 30.0f, 0.1f).onValueChanged(setting -> this.builder = this.createLayout());
+        this.showCPS = new Setting(this, "Afficher les CPS").setDefault(true);
+        this.textColor = new Setting(this, "Couleur de texte").setDefault(new Color(255, 255, 255, 255).getRGB(), 0);
+        this.pressedTextColor = new Setting(this, "Couleur de texte appuyée").setDefault(new Color(0, 0, 0, 255).getRGB(), 0);
+        this.outline = new Setting(this, "Contour").setDefault(false);
+        this.outlineColor = new Setting(this, "Couleur de contour").setDefault(new Color(0, 0, 0, 100).getRGB(), 0);
     }
     
     @Override

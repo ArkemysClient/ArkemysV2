@@ -24,15 +24,15 @@ public class OldAnimationsModule extends Module
         super("Old Animations", 16);
         new Setting(this, "Animations");
         this.blockHit = new Setting(this, "Blockhit").setDefault(false);
-        this.eating = new Setting(this, "Eating").setDefault(false);
-        this.bow = new Setting(this, "Bow").setDefault(false);
+        this.eating = new Setting(this, "Manger").setDefault(false);
+        this.bow = new Setting(this, "Arc").setDefault(false);
         this.build = new Setting(this, "Build").setDefault(false);
-        this.rod = new Setting(this, "Rod").setDefault(false);
+        this.rod = new Setting(this, "Canne à pêche").setDefault(false);
         this.swing = new Setting(this, "Swing").setDefault(false);
-        this.block = new Setting(this, "Block").setDefault(false);
-        this.damage = new Setting(this, "Damage").setDefault(false);
-        new Setting(this, "Color Options");
-        this.hitColor = new Setting(this, "Hit Color").setDefault(GuiUtils.glToRGB(1.0f, 0.0f, 0.0f, 0.3f), 0);
+        this.block = new Setting(this, "Bloquer").setDefault(false);
+        this.damage = new Setting(this, "Dégâts").setDefault(false);
+        new Setting(this, "Options de couleur");
+        this.hitColor = new Setting(this, "Couleur de dégâts").setDefault(GuiUtils.glToRGB(1.0f, 0.0f, 0.0f, 0.3f), 0);
         OldAnimationsModule.INSTANCE = this;
     }
 }

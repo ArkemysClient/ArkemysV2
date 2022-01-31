@@ -33,7 +33,7 @@ public class SettingElementColor extends SettingElement
         this.expanded = false;
         this.front = true;
         this.chroma = new Checkbox(this.getX() - 132 - 50, this.getY(), 10, 10, "Chroma", setting.getColorObject().isChroma(), null);
-        this.chromaSpeed = new Slider(this.getX() - 132 - 70, this.getY() + 12, 50, 5, 0.0f, 80.0f, 1.0f, setting.getColorObject().getChromaSpeed(), "Chroma Speed", null, parent);
+        this.chromaSpeed = new Slider(this.getX() - 132 - 70, this.getY() + 12, 50, 5, 0.0f, 80.0f, 1.0f, setting.getColorObject().getChromaSpeed(), "Vitesse Chroma", null, parent);
         this.colorPane = new ColorPane(this.getX() - 28 - 4 - 100, this.getY(), 100, 48);
         this.alphaPane = new AlphaPane(this.getX() - 28, this.getY(), 10, 48);
         this.huePane = new HuePane(this.getX() - 14, this.getY(), 10, 48);

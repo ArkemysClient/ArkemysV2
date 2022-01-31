@@ -24,9 +24,9 @@ public class HotbarModule extends Module
     
     public HotbarModule() {
         super("Hotbar");
-        new Setting(this, "General Options");
-        this.showAttackDamage = new Setting(this, "Show held item attack damage").setDefault(false);
-        this.showEnchantments = new Setting(this, "Show held item enchantments").setDefault(false);
+        new Setting(this, "Options générales");
+        this.showAttackDamage = new Setting(this, "Montrer l'attaque de l'item en main").setDefault(false);
+        this.showEnchantments = new Setting(this, "Montrer les enchantements de l'item en main").setDefault(false);
         HotbarModule.INSTANCE = this;
     }
     

@@ -17,7 +17,7 @@ public class ArmorHUDModule extends IModuleRenderer
 
     public ArmorHUDModule() {
         super("Armor HUD", 14);
-        new Setting(this, "General Options");
+        new Setting(this, "Options Générales");
         this.hor = new Setting(this, "Horizontal").setDefault(false);
     }
 

@@ -14,9 +14,9 @@ public class SpeedometerModule extends DefaultModuleRenderer
     
     public SpeedometerModule() {
         super("Speedometer", 18);
-        new Setting(this, "Number Options");
-        this.decimalPoints = new Setting(this, "Decimal Points").setDefault(2).setRange(0, 8, 1);
-        this.unit = new Setting(this, "Unit").setDefault(0).setRange("blocks/sec", "m/s");
+        new Setting(this, "Options de nombre");
+        this.decimalPoints = new Setting(this, "Points décimaux").setDefault(2).setRange(0, 8, 1);
+        this.unit = new Setting(this, "Unité").setDefault(0).setRange("blocks/s", "m/s");
     }
     
     @Override

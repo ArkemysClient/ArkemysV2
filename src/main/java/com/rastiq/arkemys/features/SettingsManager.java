@@ -17,18 +17,18 @@ public class SettingsManager extends Module
     public final Setting buttonFont;
     
     public SettingsManager() {
-        super("General Settings", -1, false);
-        new Setting(this, "General Options");
-        this.showName = new Setting(this, "Show name in F5").setDefault(false);
-        this.fixNametagRot = new Setting(this, "Fix nametag rotation").setDefault(true);
-        this.borderlessWindow = new Setting(this, "Borderless Window").setDefault(false);
-        new Setting(this, "Performance Options");
-        this.generalPerformance = new Setting(this, "Enable...").setDefault(true);
-        this.chunkUpdates = new Setting(this, "Lazy Chunk Loading").setDefault(5).setRange("Off (Vanilla)", "Lowest", "Low", "Medium", "High", "Highest");
-        this.transparentNametags = new Setting(this, "Transparent Nametags").setDefault(false);
+        super("Paramètres Généraux", -1, false);
+        new Setting(this, "Options Générales");
+        this.showName = new Setting(this, "Montrer le nom en F5").setDefault(false);
+        this.fixNametagRot = new Setting(this, "Fixer la rotation des nametags").setDefault(true);
+        this.borderlessWindow = new Setting(this, "Fenêtre sans bords").setDefault(false);
+        new Setting(this, "Options de Performances");
+        this.generalPerformance = new Setting(this, "Activer...").setDefault(true);
+        this.chunkUpdates = new Setting(this, "Lazy Chunk Loading").setDefault(5).setRange("Éteint (Vanilla)", "Plus bas", "Bas", "Moyen", "Haut", "Plus haut");
+        this.transparentNametags = new Setting(this, "Nametags transparents").setDefault(false);
         new Setting(this, "Style");
-        this.mainColor = new Setting(this, "Main UI Color").setDefault(new Color(255,223,0).getRGB(), 0);
-        this.buttonFont = new Setting(this, "Custom Button Font").setDefault(true);
+        this.mainColor = new Setting(this, "Couleur de l'UI principale").setDefault(new Color(255,223,0).getRGB(), 0);
+        this.buttonFont = new Setting(this, "Police de caractère personalisée").setDefault(true);
     }
     
     static {

@@ -4,9 +4,11 @@ import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.PerspectiveModule;
 import com.rastiq.arkemys.utils.NametagRenderer;
+import com.rastiq.arkemys.websockets.SocketClient;
 import net.minecraft.entity.*;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.*;
 import com.rastiq.arkemys.features.*;
 import net.minecraft.client.renderer.vertex.*;
@@ -53,6 +55,14 @@ public abstract class MixinRender<T extends Entity>
             final Tessellator tessellator = Tessellator.getInstance();
             final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             int i = 0;
+
+            if (entityIn instanceof AbstractClientPlayer) {
+                if (SocketClient.isUser(((AbstractClientPlayer) entityIn).getGameProfile().getName()) && entityIn.ticksExisted > 20) {
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
+                    Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
+                }
+            }
+
             if (str.equals("deadmau5")) {
                 i = -10;
             }

@@ -68,6 +68,10 @@ dependencies {
     embed 'com.github.jagrosh:DiscordIPC:e29d6d8'
     embed 'org.slick2d:slick2d-core:1.0.2'
     embed 'org.reflections:reflections:0.9.12'
+    embed 'org.jetbrains:annotations:16.0.3'
+    embed 'org.json:json:20180813'
+    embed 'co.gongzh.procbridge:procbridge:1.1.1'
+
 }
 
 mixin {

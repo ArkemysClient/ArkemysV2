@@ -33,27 +33,43 @@ public abstract class MixinMinecraft
     
     @Inject(method = { "startGame" }, at = { @At("HEAD") })
     private void startGame(final CallbackInfo ci) {
-        SplashProgress.setProgress(1, "Starting Game...");
+        SplashProgress.setProgress(1, "Lancement du jeu...");
     }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", remap = false, target = "java/util/List.add(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE))
     private void onLoadDefaultResourcePack(CallbackInfo ci) {
-        SplashProgress.setProgress(2, "Loading Resources...");
+        SplashProgress.setProgress(2, "Chargement des ressources...");
     }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "net/minecraft/client/Minecraft.createDisplay()V", shift = At.Shift.BEFORE))
     private void onCreateDisplay(CallbackInfo ci) {
-        SplashProgress.setProgress(3, "Creating Display...");
+        SplashProgress.setProgress(3, "Création de l'écran...");
     }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/OpenGlHelper.initializeTextures()V", shift = At.Shift.BEFORE))
     private void onLoadTexture(CallbackInfo ci) {
-        SplashProgress.setProgress(4, "Initializing Textures...");
+        SplashProgress.setProgress(4, "Initialisation des textures...");
     }
     
     @Inject(method = { "startGame" }, at = { @At("RETURN") })
     private void postStartGame(final CallbackInfo ci) {
-        SplashProgress.setProgress(5, "Starting Arkemys...");
+        SplashProgress.setProgress(5, "Lancement d'Arkemys...");
+        if (Util.getOSType() != Util.EnumOS.OSX) {
+            try {
+                InputStream inputStream = MixinMinecraft.class.getResourceAsStream("/assets/minecraft/arkemys/icons/windows/logo16.png");
+                InputStream inputStream2 = MixinMinecraft.class.getResourceAsStream("/assets/minecraft/arkemys/icons/windows/logo32.png");
+                if (inputStream == null) {
+                    inputStream = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
+                }
+                if (inputStream2 == null) {
+                    inputStream2 = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
+                }
+                Display.setIcon(new ByteBuffer[] { this.readImageToBuffer(inputStream), this.readImageToBuffer(inputStream2) });
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Client.INSTANCE.onPostInit();
     }
     
@@ -104,30 +120,6 @@ public abstract class MixinMinecraft
     @Overwrite
     private void drawSplashScreen(TextureManager tm) {
         SplashProgress.drawSplash(tm);
-    }
-
-    /**
-     * @author RASTIQ.
-     * @reason Change icon.
-     */
-    @Overwrite
-    private void setWindowIcon() {
-        if (Util.getOSType() != Util.EnumOS.OSX) {
-            try {
-                InputStream inputStream = MixinMinecraft.class.getResourceAsStream("/assets/minecraft/arkemys/icons/windows/logo16.png");
-                InputStream inputStream2 = MixinMinecraft.class.getResourceAsStream("/assets/minecraft/arkemys/icons/windows/logo32.png");
-                if (inputStream == null) {
-                    inputStream = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
-                }
-                if (inputStream2 == null) {
-                    inputStream2 = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
-                }
-                Display.setIcon(new ByteBuffer[] { this.readImageToBuffer(inputStream), this.readImageToBuffer(inputStream2) });
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
     
     @Shadow

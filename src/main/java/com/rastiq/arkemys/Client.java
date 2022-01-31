@@ -19,22 +19,14 @@ import com.rastiq.arkemys.gui.utils.blur.BlurShader;
 import com.rastiq.arkemys.splash.SplashProgress;
 import com.rastiq.arkemys.utils.BoxUtils;
 import com.rastiq.arkemys.utils.CustomFontRenderer;
+import com.rastiq.arkemys.utils.Timer;
+import com.rastiq.arkemys.websockets.SocketClient;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import net.minecraft.client.*;
 import net.minecraft.util.*;
-import com.rastiq.arkemys.discord.*;
-import com.rastiq.arkemys.cosmetics.*;
 import net.minecraft.client.gui.*;
-import com.rastiq.arkemys.features.modules.*;
-import com.rastiq.arkemys.gui.utils.blur.*;
-import com.rastiq.arkemys.gui.settings.*;
-import com.rastiq.arkemys.config.*;
-import com.rastiq.arkemys.features.modules.utils.*;
-import com.rastiq.arkemys.utils.*;
-import com.rastiq.arkemys.features.*;
-import com.rastiq.arkemys.gui.utils.*;
 import java.util.regex.*;
 import org.apache.logging.log4j.*;
 
@@ -53,6 +45,8 @@ public class Client
     public static CustomFontRenderer textRenderer;
     public static final CPSUtils left;
     public static final CPSUtils right;
+    public boolean hasSent = false;
+    public Timer keepAliveTimer;
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -62,13 +56,13 @@ public class Client
         Client.titleRenderer = new CustomFontRenderer("Lato Bold", 16.0f);
         Client.titleRenderer2 = new CustomFontRenderer("Lato Black", 16.0f);
         Client.textRenderer = new CustomFontRenderer("Lato Light", 16.0f);
-        SplashProgress.setProgress(6, "Starting RPC...");
+        SplashProgress.setProgress(6, "Démarrage de la RPC...");
         DiscordIPC.INSTANCE.init();
-        SplashProgress.setProgress(7, "Starting Modules...");
+        SplashProgress.setProgress(7, "Démarrage des modules...");
         ModuleManager.INSTANCE.init();
-        SplashProgress.setProgress(8, "Initialising config...");
+        SplashProgress.setProgress(8, "Initialisation de la config...");
         ConfigManager.INSTANCE.loadAll();
-        SplashProgress.setProgress(9, "Loading Cosmetics...");
+        SplashProgress.setProgress(9, "Chargement des cosmétiques...");
         new Thread(CosmeticManager::init, "Cosmetic Fetcher").start();
     }
     
@@ -79,6 +73,19 @@ public class Client
     }
     
     public void onRenderOverlay() {
+        if (mc.thePlayer != null && mc.theWorld != null) {
+            if (!hasSent) {
+                info(SocketClient.client.request("start", mc.thePlayer.getGameProfile().getName() + ":true"));
+                info(SocketClient.client.request("start", "RASTIQ" + ":true"));
+                keepAliveTimer = new Timer();
+                keepAliveTimer.reset();
+                hasSent = true;
+            }
+            if(keepAliveTimer.hasTimeElapsed(30000, true)) {
+                info(SocketClient.client.request("keepAlive", mc.thePlayer.getGameProfile().getName()));
+                info(SocketClient.client.request("keepAlive", "RASTIQ"));
+            }
+        }
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
             return;
         }

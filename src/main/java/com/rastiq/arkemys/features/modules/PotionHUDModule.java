@@ -28,9 +28,9 @@ public class PotionHUDModule extends IModuleRenderer
     public PotionHUDModule() {
         super("Potion HUD", 20);
         this.inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
-        new Setting(this, "General Options");
+        new Setting(this, "Options générales");
         this.shadow = new Setting(this, "Text Shadow").setDefault(true);
-        new Setting(this, "Blink Options");
+        new Setting(this, "Options de blink");
         this.blink = new Setting(this, "Blink").setDefault(true);
     }
     

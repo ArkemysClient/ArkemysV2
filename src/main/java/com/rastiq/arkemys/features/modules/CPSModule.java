@@ -14,8 +14,8 @@ public class CPSModule extends DefaultModuleRenderer
     
     public CPSModule() {
         super("CPS Display", 14);
-        new Setting(this, "General Options");
-        this.cpsMode = new Setting(this, "Mode").setDefault(2).setRange("Left", "Right", "Both", "Higher");
+        new Setting(this, "Options générales");
+        this.cpsMode = new Setting(this, "Mode").setDefault(2).setRange("Gauche", "Droite", "Les deux");
     }
     
     @Override
@@ -29,9 +29,6 @@ public class CPSModule extends DefaultModuleRenderer
             }
             case 2: {
                 return Client.left.getCPS() + " | " + Client.right.getCPS();
-            }
-            case 3: {
-                return Math.max(Client.left.getCPS(), Client.right.getCPS());
             }
             default: {
                 return null;
