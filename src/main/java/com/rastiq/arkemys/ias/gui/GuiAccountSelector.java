@@ -295,9 +295,7 @@ public class GuiAccountSelector extends GuiScreen {
 			Account acc = entries.get(selectedElement).account;
 			mc.displayGuiScreen(new GuiYesNo((b, id) -> {
 				if (b) {
-					if (mc.getSession().getUsername() == acc.alias()) {
-						((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session("ArkemysClient", UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
-					}
+					((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session("ArkemysClient", UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
 					Config.accounts.remove(acc);
 					updateButtons();
 					updateAccounts();

@@ -2,6 +2,8 @@ package com.rastiq.arkemys.mixins.client;
 
 import com.mojang.util.UUIDTypeAdapter;
 import com.rastiq.arkemys.Client;
+import com.rastiq.arkemys.ias.Config;
+import com.rastiq.arkemys.ias.account.MicrosoftAccount;
 import com.rastiq.arkemys.mixins.accessor.SessionAccessor;
 import com.rastiq.arkemys.splash.SplashProgress;
 import com.rastiq.arkemys.features.SettingsManager;
@@ -18,6 +20,7 @@ import org.lwjgl.*;
 import net.minecraft.util.*;
 import java.nio.*;
 import java.io.*;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.spongepowered.asm.mixin.*;
@@ -57,7 +60,14 @@ public abstract class MixinMinecraft
     
     @Inject(method = { "startGame" }, at = { @At("RETURN") })
     private void postStartGame(final CallbackInfo ci) {
-        ((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session("ArkemysClient", UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
+        Config.load(Minecraft.getMinecraft());
+        if (Config.accounts.size() >= 1) {
+            Config.accounts.get(0).login(Minecraft.getMinecraft(), t -> {
+
+            });
+        }else{
+            ((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session("ArkemysClient", UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
+        }
         SplashProgress.setProgress(5, "Lancement d'Arkemys...");
         if (Util.getOSType() != Util.EnumOS.OSX) {
             try {
