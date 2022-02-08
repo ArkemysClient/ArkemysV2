@@ -1,6 +1,8 @@
 package com.rastiq.arkemys.mixins.client;
 
+import com.mojang.util.UUIDTypeAdapter;
 import com.rastiq.arkemys.Client;
+import com.rastiq.arkemys.mixins.accessor.SessionAccessor;
 import com.rastiq.arkemys.splash.SplashProgress;
 import com.rastiq.arkemys.features.SettingsManager;
 import net.minecraft.client.*;
@@ -16,6 +18,8 @@ import org.lwjgl.*;
 import net.minecraft.util.*;
 import java.nio.*;
 import java.io.*;
+import java.util.UUID;
+
 import org.spongepowered.asm.mixin.*;
 
 @Mixin({ Minecraft.class })
@@ -53,6 +57,7 @@ public abstract class MixinMinecraft
     
     @Inject(method = { "startGame" }, at = { @At("RETURN") })
     private void postStartGame(final CallbackInfo ci) {
+        ((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session("ArkemysClient", UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
         SplashProgress.setProgress(5, "Lancement d'Arkemys...");
         if (Util.getOSType() != Util.EnumOS.OSX) {
             try {
@@ -84,6 +89,11 @@ public abstract class MixinMinecraft
         if (i != 0 && !Keyboard.isRepeatEvent() && (!(Minecraft.getMinecraft().currentScreen instanceof GuiControls) || (((GuiControls)Minecraft.getMinecraft().currentScreen).time <= Minecraft.getSystemTime() - 20L && Keyboard.getEventKeyState()))) {
             Client.INSTANCE.onKeyPress(i);
         }
+    }
+
+    @Inject(method = { "runTick" }, at = { @At("HEAD") })
+    private void runTick(final CallbackInfo ci) {
+        Client.INSTANCE.onTick();
     }
     
     @ModifyArg(method = { "createDisplay" }, at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V", remap = false))

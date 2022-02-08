@@ -6,6 +6,7 @@
   "refmap": "mixins.arkemys.refmap.json",
   "verbose": true,
   "mixins": [
+    "accessor.SessionAccessor",
     "accessor.ShaderGroupAccessor",
     "accessor.SimpleReloadableResourceManagerAccessor",
     "client.MixinMinecraft",
@@ -31,9 +32,6 @@
     "client.renderer.MixinWorldVertexBufferUploader",
     "client.renderer.chunk.MixinChunkRenderDispatcher",
     "client.renderer.entity.MixinRender",
-    "client.renderer.entity.MixinRendererLivingEntity",
-    "client.renderer.entity.MixinRenderPlayer",
-    "client.renderer.entity.layers.MixinLayerCape",
     "client.renderer.entity.layers.MixinLayerHeldItem",
     "client.resources.MixinAbstractResourcePack",
     "client.settings.MixinKeyBinding",

@@ -1,8 +1,8 @@
 package com.rastiq.arkemys;
 
+import com.google.gson.Gson;
 import com.rastiq.arkemys.config.ConfigManager;
 import com.rastiq.arkemys.config.ModuleConfig;
-import com.rastiq.arkemys.cosmetics.CosmeticManager;
 import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.ModuleManager;
 import com.rastiq.arkemys.features.SettingsManager;
@@ -29,6 +29,9 @@ import net.minecraft.util.*;
 import net.minecraft.client.gui.*;
 import java.util.regex.*;
 import org.apache.logging.log4j.*;
+import com.rastiq.arkemys.ias.Config;
+import com.rastiq.arkemys.ias.utils.Converter;
+import com.rastiq.arkemys.ias.utils.SkinRenderer;
 
 public class Client
 {
@@ -47,6 +50,7 @@ public class Client
     public static final CPSUtils right;
     public boolean hasSent = false;
     public Timer keepAliveTimer;
+    public static final Gson GSON = new Gson();
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -62,6 +66,12 @@ public class Client
         ModuleManager.INSTANCE.init();
         SplashProgress.setProgress(8, "Initialisation de la config...");
         ConfigManager.INSTANCE.loadAll();
+        SplashProgress.setProgress(9, "Initialisation des comptes...");
+        Config.load(mc);
+        Converter.convert(mc);
+        mc.addScheduledTask(() -> {
+            SkinRenderer.loadAllAsync(mc, false, () -> {});
+        });
     }
     
     public void onKeyPress(final int keycode) {
@@ -69,8 +79,8 @@ public class Client
             Minecraft.getMinecraft().displayGuiScreen((GuiScreen)((SettingsBase.lastWindow == null) ? new GuiModules(null) : SettingsBase.lastWindow));
         }
     }
-    
-    public void onRenderOverlay() {
+
+    public void onTick() {
         if (mc.thePlayer != null && mc.theWorld != null) {
             if (!hasSent) {
                 info(SocketClient.client.request("start", mc.thePlayer.getGameProfile().getName() + ":true"));
@@ -82,6 +92,9 @@ public class Client
                 info(SocketClient.client.request("keepAlive", mc.thePlayer.getGameProfile().getName()));
             }
         }
+    }
+    
+    public void onRenderOverlay() {
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
             return;
         }
