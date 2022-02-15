@@ -115,7 +115,7 @@ public class MSAuthScreen extends GuiScreen {
 	
 	private void auth(String query) {
 		try {
-			state = "Progression";
+			state = "Chargement...";
 			if (query == null) throw new NullPointerException("query=null");
 			if (query.equals("error=access_denied&error_description=The user has denied access to the scope requested by the client application."))
 				throw new AuthException(new ChatComponentTranslation("ias.msauth.error.revoked"));
