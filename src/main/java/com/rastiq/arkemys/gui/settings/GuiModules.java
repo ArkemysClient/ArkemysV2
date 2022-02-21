@@ -48,6 +48,7 @@ public class GuiModules extends SettingsBase
     }
     
     public void initGui(final boolean keepSearch) {
+        DiscordCheck.INSTANCE.rpcCheck = false;
         this.row = 1;
         this.column = 1;
         this.gap = this.getLayoutWidth(this.getMainWidth() / 6) / 8;
@@ -122,7 +123,7 @@ public class GuiModules extends SettingsBase
         final int y = (int)this.getRowHeight(this.row, boxHeight + 10);
         this.elements.add(new ElementModule(x + 1, y + 1, boxWidth, boxHeight, module, button -> {
             if (this.elements.stream().filter(element -> element != button).noneMatch(element -> element.hovered)) {
-                if (!isSinglePlayer()) {
+                if (!HypixelDetector.isSinglePlayer()) {
                     if (module.displayName == "Perspective") {
                         if (!HypixelDetector.INSTANCE.isHypixel(Minecraft.getMinecraft().getCurrentServerData())) {
                             ModuleConfig.INSTANCE.setEnabled(module, !ModuleConfig.INSTANCE.isEnabled(module));
@@ -143,22 +144,6 @@ public class GuiModules extends SettingsBase
         if (this.column > this.columns) {
             this.column = 1;
             ++this.row;
-        }
-    }
-
-    public static boolean isSinglePlayer()
-    {
-        try
-        {
-            if( MinecraftServer.getServer().isServerRunning() )
-            {
-                return MinecraftServer.getServer().isSinglePlayer();
-            }
-            return false;
-        }
-        catch( Exception e ) // Server is null, not started
-        {
-            return false;
         }
     }
     

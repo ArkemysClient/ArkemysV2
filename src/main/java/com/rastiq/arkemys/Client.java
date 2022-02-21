@@ -17,8 +17,7 @@ import com.rastiq.arkemys.gui.settings.SettingsBase;
 import com.rastiq.arkemys.gui.utils.GuiUtils;
 import com.rastiq.arkemys.gui.utils.blur.BlurShader;
 import com.rastiq.arkemys.splash.SplashProgress;
-import com.rastiq.arkemys.utils.BoxUtils;
-import com.rastiq.arkemys.utils.CustomFontRenderer;
+import com.rastiq.arkemys.utils.*;
 import com.rastiq.arkemys.utils.Timer;
 import com.rastiq.arkemys.websockets.SocketClient;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +26,8 @@ import java.io.*;
 import net.minecraft.client.*;
 import net.minecraft.util.*;
 import net.minecraft.client.gui.*;
+
+import java.util.concurrent.TimeUnit;
 import java.util.regex.*;
 import org.apache.logging.log4j.*;
 import com.rastiq.arkemys.ias.Config;
@@ -60,12 +61,14 @@ public class Client
         Client.titleRenderer = new CustomFontRenderer("Lato Bold", 16.0f);
         Client.titleRenderer2 = new CustomFontRenderer("Lato Black", 16.0f);
         Client.textRenderer = new CustomFontRenderer("Lato Light", 16.0f);
-        SplashProgress.setProgress(6, "Démarrage de la RPC...");
-        DiscordIPC.INSTANCE.init();
+        SplashProgress.setProgress(6, "Initialisation de la config...");
+        ConfigManager.INSTANCE.loadAll();
         SplashProgress.setProgress(7, "Démarrage des modules...");
         ModuleManager.INSTANCE.init();
-        SplashProgress.setProgress(8, "Initialisation de la config...");
-        ConfigManager.INSTANCE.loadAll();
+        SplashProgress.setProgress(8, "Démarrage de la RPC...");
+        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {
+            DiscordIPC.INSTANCE.start();
+        }
         SplashProgress.setProgress(9, "Initialisation des comptes...");
         Config.load(mc);
         Converter.convert(mc);
@@ -105,6 +108,19 @@ public class Client
         BlurShader.INSTANCE.onRenderTick();
         if (this.mc.currentScreen instanceof GuiModules || this.mc.currentScreen instanceof GuiSettings) {
             return;
+        }
+        if (DiscordCheck.INSTANCE.rpcCheck == false) {
+            if ((SettingsManager.INSTANCE.discordRPC.getBoolean() == false)) {
+                if (DiscordIPC.INSTANCE.running == true) {
+                    DiscordIPC.INSTANCE.shutdown();
+                }
+            }
+            if ((SettingsManager.INSTANCE.discordRPC.getBoolean() == true)) {
+                if (DiscordIPC.INSTANCE.running == false) {
+                    DiscordIPC.INSTANCE.restart();
+                }
+            }
+            DiscordCheck.INSTANCE.rpcCheck = true;
         }
         ModuleManager.INSTANCE.modules.stream().filter(module -> ModuleConfig.INSTANCE.isEnabled(module) && module.isRender()).forEach(module -> ((IModuleRenderer)module).render(BoxUtils.getBoxOffX(module, (int)ModuleConfig.INSTANCE.getActualX(module), ((IModuleRenderer)module).getWidth()), BoxUtils.getBoxOffY(module, (int)ModuleConfig.INSTANCE.getActualY(module), ((IModuleRenderer)module).getHeight())));
         Client.left.tick();

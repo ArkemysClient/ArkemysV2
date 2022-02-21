@@ -1,53 +1,96 @@
 package com.rastiq.arkemys.discord;
 
-import com.jagrosh.discordipc.*;
-import com.jagrosh.discordipc.exceptions.*;
 import com.rastiq.arkemys.Client;
-import com.rastiq.arkemys.*;
-import com.jagrosh.discordipc.entities.pipe.*;
-import com.jagrosh.discordipc.entities.*;
-import java.time.*;
-import org.json.*;
+import com.rastiq.arkemys.features.SettingsManager;
+import com.rastiq.arkemys.utils.HypixelDetector;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
+import net.arikia.dev.drpc.DiscordUser;
+import net.arikia.dev.drpc.callbacks.ReadyCallback;
+import net.minecraft.client.Minecraft;
 
-public class DiscordIPC implements IPCListener
+public class DiscordIPC
 {
-    public static final DiscordIPC INSTANCE;
-    private IPCClient client;
-    
-    public void init() {
-        (this.client = new IPCClient(860474326851911700L)).setListener(this);
-        try {
-            this.client.connect();
-        }
-        catch (NoDiscordClientException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e2) {
-            Client.error("UNKOWN ERROR");
-            e2.printStackTrace();
-        }
-        Client.info("IPC {} -> {}", this.client.getStatus(), this.client.getDiscordBuild());
+    public static DiscordIPC INSTANCE = new DiscordIPC();
+    public boolean running = false;
+    public long created = 0;
+
+    public void start() {
+        this.created = System.currentTimeMillis();
+
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(new ReadyCallback() {
+            @Override
+            public void apply(DiscordUser user) {
+                Client.info("RPC is launcher with " + user.username +  "#" + user.discriminator);
+                update("Chargement...", "");
+            }
+        }).build();
+
+        DiscordRPC.discordInitialize("860474326851911700", handlers, true);
+
+        running = true;
+
+        new Thread("Discord RPC Callback") {
+
+            @Override
+            public void run() {
+
+                while(running) {
+                    DiscordRPC.discordRunCallbacks();
+                }
+            }
+        }.start();
     }
-    
+
+    public void restart() {
+        this.created = System.currentTimeMillis();
+
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(new ReadyCallback() {
+            @Override
+            public void apply(DiscordUser user) {
+                Client.info("RPC is launcher with " + user.username +  "#" + user.discriminator);
+                update("Chargement...", "");
+            }
+        }).build();
+
+        DiscordRPC.discordInitialize("860474326851911700", handlers, true);
+
+        running = true;
+
+        new Thread("Discord RPC Callback") {
+
+            @Override
+            public void run() {
+
+                while(running) {
+                    DiscordRPC.discordRunCallbacks();
+                }
+            }
+        }.start();
+
+        if (HypixelDetector.isSinglePlayer()) {
+            DiscordIPC.INSTANCE.update("En monde solo", "En jeu");
+        }else{
+            if (HypixelDetector.INSTANCE.isHypixel(Minecraft.getMinecraft().getCurrentServerData())) {
+                if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans un serveur", "Hypixel Network");}
+            } else {
+                if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans un serveur", (Minecraft.getMinecraft().getCurrentServerData().serverIP));}
+            }
+        }
+    }
+
     public void shutdown() {
-        if (this.client != null && this.client.getStatus() == PipeStatus.CONNECTED) {
-            this.client.close();
-            Client.info("Discord IPC closed!");
-        }
+        running = false;
+        DiscordRPC.discordShutdown();
     }
-    
-    public void onReady(final IPCClient client) {
-        final RichPresence.Builder builder = new RichPresence.Builder().setState("Idle").setDetails("Minecraft 1.8.9").setLargeImage("large", "Arkemys Client 1.8.9").setStartTimestamp(OffsetDateTime.now());
-        client.sendRichPresence(builder.build());
-    }
-    
-    public void onClose(final IPCClient client, final JSONObject json) {
-    }
-    
-    public void onDisconnect(final IPCClient client, final Throwable t) {
-    }
-    
-    static {
-        INSTANCE = new DiscordIPC();
+
+    public void update(String firstLine, String secondLine) {
+        DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(secondLine);
+        b.setBigImage("large", "");
+        b.setDetails(firstLine);
+        b.setStartTimestamps(created);
+
+        DiscordRPC.discordUpdatePresence(b.build());
     }
 }

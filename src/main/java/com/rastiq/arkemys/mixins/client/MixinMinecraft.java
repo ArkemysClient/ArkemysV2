@@ -2,6 +2,7 @@ package com.rastiq.arkemys.mixins.client;
 
 import com.mojang.util.UUIDTypeAdapter;
 import com.rastiq.arkemys.Client;
+import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.ias.Config;
 import com.rastiq.arkemys.ias.account.MicrosoftAccount;
 import com.rastiq.arkemys.mixins.accessor.SessionAccessor;
@@ -11,6 +12,7 @@ import net.minecraft.client.*;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.*;
 import net.minecraft.util.Util;
+import net.minecraft.world.WorldSettings;
 import org.spongepowered.asm.mixin.injection.callback.*;
 import org.lwjgl.input.*;
 import net.minecraft.client.gui.*;
@@ -152,5 +154,10 @@ public abstract class MixinMinecraft
     @Overwrite
     public int getLimitFramerate() {
         return (Minecraft.getMinecraft().theWorld == null && Minecraft.getMinecraft().currentScreen != null) ? 60 : Minecraft.getMinecraft().gameSettings.limitFramerate;
+    }
+
+    @Inject(method = "launchIntegratedServer", at = @At("RETURN"))
+    public void launchIntegratedServer(String crashreportcategory, String throwable, WorldSettings s, CallbackInfo ci) {
+        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("En monde solo", "En jeu");}
     }
 }

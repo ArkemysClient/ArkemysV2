@@ -1,6 +1,8 @@
 package com.rastiq.arkemys.mixins.client.gui;
 
 import com.rastiq.arkemys.Client;
+import com.rastiq.arkemys.discord.DiscordIPC;
+import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.gui.GuiButtonIcon;
 import com.rastiq.arkemys.gui.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
@@ -17,6 +19,7 @@ import com.rastiq.arkemys.ias.Config;
 import com.rastiq.arkemys.ias.utils.Expression;
 import com.rastiq.arkemys.ias.gui.GuiAccountSelector;
 import com.rastiq.arkemys.ias.gui.GuiButtonWithImage;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
@@ -40,6 +43,11 @@ public class MixinGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         final GuiButton guiButton = (GuiButton) buttonIn;
         guiButton.xPosition += 24;
         return guiButton;
+    }
+
+    @Inject(method = "initGui", at = @At(value = "HEAD"))
+    public void initGuiDiscord(CallbackInfo ci) {
+        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans les menus", "Menu principal");}
     }
 
     /**

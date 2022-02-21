@@ -65,7 +65,6 @@ dependencies {
     }
     embed 'org.java-websocket:Java-WebSocket:1.4.1'
     embed 'com.github.Vatuu:discord-rpc:1.6.2'
-    embed 'com.github.jagrosh:DiscordIPC:e29d6d8'
     embed 'org.slick2d:slick2d-core:1.0.2'
     embed 'org.reflections:reflections:0.9.12'
     embed 'org.jetbrains:annotations:16.0.3'

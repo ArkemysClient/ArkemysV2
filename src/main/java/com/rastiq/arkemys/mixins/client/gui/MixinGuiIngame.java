@@ -2,7 +2,10 @@ package com.rastiq.arkemys.mixins.client.gui;
 
 import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.config.ModuleConfig;
+import com.rastiq.arkemys.discord.DiscordIPC;
+import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.CrosshairModule;
+import com.rastiq.arkemys.utils.DiscordCheck;
 import net.minecraft.client.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.callback.*;

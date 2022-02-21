@@ -1,5 +1,6 @@
 package com.rastiq.arkemys.mixins.client.gui;
 
+import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.utils.WatermarkRenderer;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -9,6 +10,7 @@ import com.rastiq.arkemys.utils.*;
 
 @Mixin(GuiIngameMenu.class)
 public class MixinGuiIngameMenu extends GuiScreen {
+
     @Inject(method = "initGui", at = @At("TAIL"))
     private void initGui(CallbackInfo ci) {
         this.buttonList.add(new GuiButton(-1, this.width / 2 - 100, this.height / 4 + 56, 200, 20, "Serverlist"));

@@ -1,6 +1,7 @@
 package com.rastiq.arkemys.utils;
 
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.regex.Pattern;
 
@@ -13,6 +14,22 @@ public class HypixelDetector {
         boolean hypixel = HYPIXEL_PATTERN.matcher(server.serverIP).find();
         if (hypixel) return true;
         else return false;
+    }
+
+    public static boolean isSinglePlayer()
+    {
+        try
+        {
+            if( MinecraftServer.getServer().isServerRunning() )
+            {
+                return MinecraftServer.getServer().isSinglePlayer();
+            }
+            return false;
+        }
+        catch( Exception e ) // Server is null, not started
+        {
+            return false;
+        }
     }
 
 }

@@ -16,6 +16,7 @@
     "client.gui.MixinGuiIngame",
     "client.gui.MixinGuiIngameMenu",
     "client.gui.MixinGuiMainMenu",
+    "client.gui.MixinGuiSelectWorld",
     "client.gui.MixinGuiMultiplayer",
     "client.gui.MixinGuiNewChat",
     "client.gui.MixinGuiOptionSlider",
