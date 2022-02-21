@@ -57,7 +57,7 @@ public class GuiModules extends SettingsBase
             this.elements.add(this.search);
         }
         else {
-            this.elements.add(this.search = new ElementTextfield(this.width / 2 + this.getWidth() / 2 - 104, this.height / 2 - this.getHeight() / 2 + 4, 100, 10, "Search...", this));
+            this.elements.add(this.search = new ElementTextfield(this.width / 2 + this.getWidth() / 2 - 104, this.height / 2 - this.getHeight() / 2 + 4, 100, 10, "Rechercher...", this));
         }
         final LinkedHashSet<Module> modules = new LinkedHashSet<Module>(ModuleManager.INSTANCE.modules);
         final Set<Module> toRemove = Sets.newLinkedHashSet();
@@ -123,7 +123,11 @@ public class GuiModules extends SettingsBase
         this.elements.add(new ElementModule(x + 1, y + 1, boxWidth, boxHeight, module, button -> {
             if (this.elements.stream().filter(element -> element != button).noneMatch(element -> element.hovered)) {
                 if (!isSinglePlayer()) {
-                    if (!HypixelDetector.INSTANCE.isHypixel(Minecraft.getMinecraft().getCurrentServerData())) {
+                    if (module.displayName == "Perspective") {
+                        if (!HypixelDetector.INSTANCE.isHypixel(Minecraft.getMinecraft().getCurrentServerData())) {
+                            ModuleConfig.INSTANCE.setEnabled(module, !ModuleConfig.INSTANCE.isEnabled(module));
+                        }
+                    }else{
                         ModuleConfig.INSTANCE.setEnabled(module, !ModuleConfig.INSTANCE.isEnabled(module));
                     }
                 }else{

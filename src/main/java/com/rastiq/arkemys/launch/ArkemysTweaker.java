@@ -16,21 +16,29 @@ public class ArkemysTweaker implements ITweaker
     public ArkemysTweaker() {
         this.launchArguments = Lists.newArrayList();
     }
+
+    private static final boolean isOptifineLoaded = isClassLoaded("net.optifine.Lang");
     
     public void acceptOptions(final List<String> args, final File gameDir, final File assetsDir, final String profile) {
-        this.launchArguments.addAll(args);
-        if (!args.contains("--version") && profile != null) {
-            this.launchArguments.add("--version");
-            this.launchArguments.add(profile);
+        if (!isOptifineLoaded) {
+            this.launchArguments.addAll(args);
+            if (!args.contains("--version") && profile != null) {
+                this.launchArguments.add("--version");
+                this.launchArguments.add(profile);
+            }
+
+            if (!args.contains("--assetsDir") && assetsDir != null) {
+                this.launchArguments.add("--assetsDir");
+                this.launchArguments.add(assetsDir.getAbsolutePath());
+            }
+
+            if (!args.contains("--gameDir") && gameDir != null) {
+                this.launchArguments.add("--gameDir");
+                this.launchArguments.add(gameDir.getAbsolutePath());
+            }
+
         }
-        if (!args.contains("--assetDir") && assetsDir != null) {
-            this.launchArguments.add("--assetDir");
-            this.launchArguments.add(assetsDir.getAbsolutePath());
-        }
-        if (!args.contains("--gameDir") && gameDir != null) {
-            this.launchArguments.add("--gameDir");
-            this.launchArguments.add(gameDir.getAbsolutePath());
-        }
+
     }
     
     public void injectIntoClassLoader(final LaunchClassLoader classLoader) {
@@ -50,9 +58,20 @@ public class ArkemysTweaker implements ITweaker
     }
     
     public String[] getLaunchArguments() {
-        return this.launchArguments.toArray(new String[0]);
+        return (String[])this.launchArguments.toArray(new String[0]);
+
     }
-    
+
+    private static boolean isClassLoaded(String var0) {
+        try {
+            Class.forName(var0);
+            return true;
+        } catch (ClassNotFoundException var2) {
+            return false;
+        }
+    }
+
+
     static {
         logger = LogManager.getLogger();
     }
