@@ -5,6 +5,7 @@ import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.PerspectiveModule;
 import com.rastiq.arkemys.utils.HypixelDetector;
+import com.rastiq.arkemys.utils.NameIconRenderer;
 import net.minecraft.client.resources.I18n;
 import org.spongepowered.asm.mixin.*;
 import net.minecraft.client.gui.*;
@@ -21,7 +22,7 @@ public class MixinGuiMultiplayer
 
     @Inject(method = "initGui", at = @At(value = "HEAD"))
     public void initGuiDiscord(CallbackInfo ci) {
-        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans les menus", "Menu multijoueur");}
+        DiscordIPC.INSTANCE.update("Dans les menus", "Menu multijoueur");
     }
 
     @Inject(method = { "connectToServer" }, at = { @At("HEAD") })
@@ -33,10 +34,11 @@ public class MixinGuiMultiplayer
             ModuleConfig.INSTANCE.setEnabled(PerspectiveModule.INSTANCE, false);
         }
         if (HypixelDetector.INSTANCE.isHypixel(server)) {
-            if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans un serveur", "Hypixel Network");}
+            DiscordIPC.INSTANCE.update("Dans un serveur", "Hypixel Network");
         } else {
-            if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans un serveur", server.serverIP);}
+            DiscordIPC.INSTANCE.update("Dans un serveur", server.serverIP);
         }
+        NameIconRenderer.INSTANCE.reset();
     }
 
     @Inject(method = { "drawScreen" }, at = { @At("TAIL")})

@@ -57,10 +57,28 @@ public abstract class MixinRender<T extends Entity>
             int i = 0;
 
             if (entityIn instanceof AbstractClientPlayer) {
-                if (SocketClient.isUser(((AbstractClientPlayer) entityIn).getGameProfile().getName()) && entityIn.ticksExisted > 20) {
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
-                    Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
+                if (entityIn.ticksExisted > 20) {
+                    if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
+                        if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getGameProfile().getName()) == true) {
+                            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
+                            Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
+                        }
+                    }else{
+                        if (SocketClient.isUser(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
+                            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
+                            Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
+                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
+                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
+                        }else{
+                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
+                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), false);
+                        }
+                    }
                 }
+            }
+
+            if (NameIconRenderer.INSTANCE.hasFinished() == true) {
+                NameIconRenderer.INSTANCE.hasRenderedIcons.clear();
             }
 
             if (str.equals("deadmau5")) {

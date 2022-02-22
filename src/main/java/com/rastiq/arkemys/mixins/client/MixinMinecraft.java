@@ -158,6 +158,6 @@ public abstract class MixinMinecraft
 
     @Inject(method = "launchIntegratedServer", at = @At("RETURN"))
     public void launchIntegratedServer(String crashreportcategory, String throwable, WorldSettings s, CallbackInfo ci) {
-        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("En monde solo", "En jeu");}
+        DiscordIPC.INSTANCE.update("En monde solo", "En jeu");
     }
 }

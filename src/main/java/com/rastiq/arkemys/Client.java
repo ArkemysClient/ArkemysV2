@@ -66,9 +66,7 @@ public class Client
         SplashProgress.setProgress(7, "Démarrage des modules...");
         ModuleManager.INSTANCE.init();
         SplashProgress.setProgress(8, "Démarrage de la RPC...");
-        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {
-            DiscordIPC.INSTANCE.start();
-        }
+        DiscordIPC.INSTANCE.start();
         SplashProgress.setProgress(9, "Initialisation des comptes...");
         Config.load(mc);
         Converter.convert(mc);
@@ -108,19 +106,6 @@ public class Client
         BlurShader.INSTANCE.onRenderTick();
         if (this.mc.currentScreen instanceof GuiModules || this.mc.currentScreen instanceof GuiSettings) {
             return;
-        }
-        if (DiscordCheck.INSTANCE.rpcCheck == false) {
-            if ((SettingsManager.INSTANCE.discordRPC.getBoolean() == false)) {
-                if (DiscordIPC.INSTANCE.running == true) {
-                    DiscordIPC.INSTANCE.shutdown();
-                }
-            }
-            if ((SettingsManager.INSTANCE.discordRPC.getBoolean() == true)) {
-                if (DiscordIPC.INSTANCE.running == false) {
-                    DiscordIPC.INSTANCE.restart();
-                }
-            }
-            DiscordCheck.INSTANCE.rpcCheck = true;
         }
         ModuleManager.INSTANCE.modules.stream().filter(module -> ModuleConfig.INSTANCE.isEnabled(module) && module.isRender()).forEach(module -> ((IModuleRenderer)module).render(BoxUtils.getBoxOffX(module, (int)ModuleConfig.INSTANCE.getActualX(module), ((IModuleRenderer)module).getWidth()), BoxUtils.getBoxOffY(module, (int)ModuleConfig.INSTANCE.getActualY(module), ((IModuleRenderer)module).getHeight())));
         Client.left.tick();

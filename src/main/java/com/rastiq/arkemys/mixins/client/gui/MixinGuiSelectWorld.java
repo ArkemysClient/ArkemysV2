@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiSelectWorld {
     @Inject(method = "initGui", at = @At("HEAD"))
     public void initGuiDiscord(CallbackInfo ci) {
-        if (SettingsManager.INSTANCE.discordRPC.getBoolean() == true) {DiscordIPC.INSTANCE.update("Dans les menus", "Menu solo");}
+        DiscordIPC.INSTANCE.update("Dans les menus", "Menu solo");
     }
 }
