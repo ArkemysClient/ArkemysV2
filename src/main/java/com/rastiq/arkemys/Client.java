@@ -63,6 +63,10 @@ public class Client
         Client.textRenderer = new CustomFontRenderer("Lato Light", 16.0f);
         SplashProgress.setProgress(6, "Initialisation de la config...");
         ConfigManager.INSTANCE.loadAll();
+        File serverResources = new File("server-resource-packs");
+        if (!serverResources.exists()) {
+            serverResources.mkdir();
+        }
         SplashProgress.setProgress(7, "Démarrage des modules...");
         ModuleManager.INSTANCE.init();
         SplashProgress.setProgress(8, "Démarrage de la RPC...");
