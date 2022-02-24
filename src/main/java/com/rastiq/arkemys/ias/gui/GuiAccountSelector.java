@@ -264,6 +264,7 @@ public class GuiAccountSelector extends GuiScreen {
 			acc.use();
 			acc.login(mc, t -> {
 				logging = false;
+				Client.INSTANCE.hasSent = false;
 				if (t == null) {
 					mc.displayGuiScreen(prev);
 				} else if (t instanceof AuthException) {
@@ -281,6 +282,8 @@ public class GuiAccountSelector extends GuiScreen {
 			Account acc = entries.get(selectedElement).account;
 			acc.use();
 			((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session(acc.alias(), UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
+			Client.INSTANCE.hasSent = false;
+			mc.displayGuiScreen(prev);
 		}
 		
 		public void edit() {

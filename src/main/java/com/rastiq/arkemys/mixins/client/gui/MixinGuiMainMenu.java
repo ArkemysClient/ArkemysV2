@@ -143,7 +143,7 @@ public class MixinGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
         mc.currentScreen.drawCenteredString(mc.fontRendererObj, mc.getSession().getUsername() == "ArkemysClient" ? "Pas connecté" : "Connecté en tant que " + mc.getSession().getUsername(), textX, textY, 0xFFCC8888);
         if (mc.getSession().getToken().equals("0") || mc.getSession().getToken().equals("-")) {
-            List<String> list = mc.fontRendererObj.listFormattedStringToWidth(mc.getSession().getUsername() == "ArkemysClient" ? "" : "Hors-ligne", mc.currentScreen.width);
+            List<String> list = mc.fontRendererObj.listFormattedStringToWidth(mc.getSession().getUsername() == "ArkemysClient" ? "" : "Mode Cracké", mc.currentScreen.width);
             for (int i = 0; i < list.size(); i++) {
                 mc.currentScreen.drawCenteredString(mc.fontRendererObj, list.get(i), mc.currentScreen.width / 2, i * 9 + 1, 16737380);
             }

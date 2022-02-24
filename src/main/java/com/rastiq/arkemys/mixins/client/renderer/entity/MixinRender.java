@@ -58,20 +58,20 @@ public abstract class MixinRender<T extends Entity>
 
             if (entityIn instanceof AbstractClientPlayer) {
                 if (entityIn.ticksExisted > 20) {
-                    if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
-                        if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getGameProfile().getName()) == true) {
+                    if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getName())) {
+                        if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getName()) == true) {
                             Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
                             Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
                         }
                     }else{
-                        if (SocketClient.isUser(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
+                        if (SocketClient.isUser(((AbstractClientPlayer) entityIn).getName())) {
                             Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
                             Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entityIn.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
-                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
-                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
+                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getName(), true);
+                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getName(), true);
                         }else{
-                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), true);
-                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getGameProfile().getName(), false);
+                            NameIconRenderer.INSTANCE.hasRenderedIcons.put(((AbstractClientPlayer) entityIn).getName(), true);
+                            NameIconRenderer.INSTANCE.isUsingArkemys.put(((AbstractClientPlayer) entityIn).getName(), false);
                         }
                     }
                 }
