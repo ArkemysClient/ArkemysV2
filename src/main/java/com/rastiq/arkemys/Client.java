@@ -88,13 +88,21 @@ public class Client
     public void onTick() {
         if (mc.thePlayer != null && mc.theWorld != null) {
             if (!hasSent) {
-                info(SocketClient.client.request("start", mc.getSession().getUsername() + ":true"));
+                try {
+                    info(SocketClient.client.request("start", mc.getSession().getUsername() + ":true"));
+                }catch (Exception e){
+
+                }
                 keepAliveTimer = new Timer();
                 keepAliveTimer.reset();
                 hasSent = true;
             }
             if(keepAliveTimer.hasTimeElapsed(30000, true)) {
-                info(SocketClient.client.request("keepAlive", mc.getSession().getUsername()));
+                try {
+                    info(SocketClient.client.request("keepAlive", mc.getSession().getUsername()));
+                }catch (Exception e){
+
+                }
             }
         }
     }

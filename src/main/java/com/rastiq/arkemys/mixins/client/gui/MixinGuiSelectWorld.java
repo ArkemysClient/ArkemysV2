@@ -1,5 +1,6 @@
 package com.rastiq.arkemys.mixins.client.gui;
 
+import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.SettingsManager;
 import net.minecraft.client.gui.GuiSelectWorld;
@@ -12,6 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiSelectWorld {
     @Inject(method = "initGui", at = @At("HEAD"))
     public void initGuiDiscord(CallbackInfo ci) {
+        if (Client.INSTANCE.keepAliveTimer != null) {
+            Client.INSTANCE.keepAliveTimer = null;
+            Client.INSTANCE.hasSent = false;
+        }
         DiscordIPC.INSTANCE.update("Dans les menus", "Menu solo");
     }
 }

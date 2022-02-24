@@ -1,5 +1,6 @@
 package com.rastiq.arkemys.mixins.client.gui;
 
+import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.SettingsManager;
@@ -22,6 +23,10 @@ public class MixinGuiMultiplayer
 
     @Inject(method = "initGui", at = @At(value = "HEAD"))
     public void initGuiDiscord(CallbackInfo ci) {
+        if (Client.INSTANCE.keepAliveTimer != null) {
+            Client.INSTANCE.keepAliveTimer = null;
+            Client.INSTANCE.hasSent = false;
+        }
         DiscordIPC.INSTANCE.update("Dans les menus", "Menu multijoueur");
     }
 

@@ -48,6 +48,10 @@ public class MixinGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     @Inject(method = "initGui", at = @At(value = "HEAD"))
     public void initGuiDiscord(CallbackInfo ci) {
         DiscordIPC.INSTANCE.update("Dans les menus", "Menu principal");
+        if (Client.INSTANCE.keepAliveTimer != null) {
+            Client.INSTANCE.keepAliveTimer = null;
+            Client.INSTANCE.hasSent = false;
+        }
     }
 
     /**

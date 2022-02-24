@@ -4,6 +4,7 @@ import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.PerspectiveModule;
 import net.minecraft.client.*;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.*;
 import com.rastiq.arkemys.features.modules.*;
 import com.rastiq.arkemys.features.*;
@@ -41,6 +42,8 @@ public class NametagRenderer
             final Tessellator tessellator = Tessellator.getInstance();
             final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             final int i = fontrenderer.getStringWidth(tag) / 2;
+            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
+            Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(mc.getSession().getUsername()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
             if (!SettingsManager.INSTANCE.transparentNametags.getBoolean()) {
                 GlStateManager.disableTexture2D();
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
