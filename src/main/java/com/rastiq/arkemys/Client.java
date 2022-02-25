@@ -20,6 +20,7 @@ import com.rastiq.arkemys.splash.SplashProgress;
 import com.rastiq.arkemys.utils.*;
 import com.rastiq.arkemys.utils.Timer;
 import com.rastiq.arkemys.websockets.SocketClient;
+import net.minecraft.entity.Entity;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
@@ -27,6 +28,7 @@ import net.minecraft.client.*;
 import net.minecraft.util.*;
 import net.minecraft.client.gui.*;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.*;
 import org.apache.logging.log4j.*;
@@ -52,6 +54,8 @@ public class Client
     public boolean hasSent = false;
     public Timer keepAliveTimer;
     public static final Gson GSON = new Gson();
+    public String rangeText = "Aucune attaque";
+    public long lastAttack;
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -106,8 +110,23 @@ public class Client
             }
         }
     }
+
+    public void onAttack(Entity entity) {
+        if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && this.mc.objectMouseOver.entityHit.getEntityId() == entity.getEntityId()) {
+            Vec3 vec3 = this.mc.getRenderViewEntity().getPositionEyes(1.0F);
+            double range = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
+            this.rangeText = (new DecimalFormat("#.##")).format(range) + " blocks";
+        } else {
+            this.rangeText = "Pas sur la cible ?";
+        }
+
+        this.lastAttack = System.currentTimeMillis();
+    }
     
     public void onRenderOverlay() {
+        if (System.currentTimeMillis() - this.lastAttack > 2000L) {
+            this.rangeText = "Aucune attaque";
+        }
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
             return;
         }

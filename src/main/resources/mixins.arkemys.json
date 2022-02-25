@@ -36,6 +36,7 @@
     "client.renderer.entity.layers.MixinLayerHeldItem",
     "client.resources.MixinAbstractResourcePack",
     "client.settings.MixinKeyBinding",
+    "entity.player.MixinEntityPlayer",
     "util.MixinMovementInput",
     "world.chunk.storage.MixinAnvilChunkLoader"
   ]

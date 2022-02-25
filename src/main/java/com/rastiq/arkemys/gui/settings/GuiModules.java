@@ -77,7 +77,7 @@ public class GuiModules extends SettingsBase
             modules.removeAll(toRemove);
         }
         super.initGui();
-        this.registerScroll(new Scroll(modules, this.width, this.height, this.height / 2 - this.getHeight() / 2 + 20, this.height / 2 + this.getHeight() / 2 - 20, 40, this.width / 2 + this.getWidth() / 2 - 4, this.columns));
+        this.registerScroll(new Scroll(modules, this.width, this.height, this.height / 2 - this.getHeight() / 2 + 20, this.height / 2 + this.getHeight() / 2 - 45, 40, this.width / 2 + this.getWidth() / 2 - 4, this.columns));
         this.setScrollState(GuiModules.scrollState);
         Keyboard.enableRepeatEvents(true);
     }
