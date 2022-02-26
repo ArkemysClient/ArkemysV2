@@ -57,7 +57,8 @@ public class Client
     public String rangeText = "Aucune attaque";
     public long lastAttack;
     public boolean processMotionBlur = false;
-    public int lastMotionBlurValue = 0;
+    public float lastMotionBlurValue = 0.0f;
+    public boolean hasLoadedConfig = false;
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -93,6 +94,10 @@ public class Client
 
     public void onTick() {
         if (mc.thePlayer != null && mc.theWorld != null) {
+            if (hasLoadedConfig == false) {
+                ConfigManager.INSTANCE.loadAll();
+                hasLoadedConfig = true;
+            }
             if (!hasSent) {
                 try {
                     info(SocketClient.client.request("start", mc.getSession().getUsername() + ":true"));
