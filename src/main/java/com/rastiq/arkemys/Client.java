@@ -57,7 +57,7 @@ public class Client
     public String rangeText = "Aucune attaque";
     public long lastAttack;
     public boolean processMotionBlur = false;
-    public float lastMotionBlurValue = 0.0f;
+    public float lastMotionBlurValue = 0;
     public boolean hasLoadedConfig = false;
     
     public Client() {

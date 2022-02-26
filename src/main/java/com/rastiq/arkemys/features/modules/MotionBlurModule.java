@@ -11,7 +11,7 @@ public class MotionBlurModule extends Module
     public MotionBlurModule() {
         super("Motion Blur", 14);
         new Setting(this, "Options");
-        this.intensity = new Setting(this, "Intensité").setDefault(2.0f).setRange(1.0f, 7.0f, 1.0f);
+        this.intensity = new Setting(this, "Intensité").setDefault(2).setRange(1, 7, 1);
         MotionBlurModule.INSTANCE = this;
     }
 }
