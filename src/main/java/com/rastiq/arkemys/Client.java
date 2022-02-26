@@ -7,15 +7,15 @@ import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.ModuleManager;
 import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.HotbarModule;
+import com.rastiq.arkemys.features.modules.MotionBlurModule;
 import com.rastiq.arkemys.features.modules.PerspectiveModule;
 import com.rastiq.arkemys.features.modules.utils.CPSUtils;
 import com.rastiq.arkemys.features.modules.utils.IModuleRenderer;
-import com.rastiq.arkemys.gui.settings.GuiHUDEditor;
-import com.rastiq.arkemys.gui.settings.GuiModules;
-import com.rastiq.arkemys.gui.settings.GuiSettings;
-import com.rastiq.arkemys.gui.settings.SettingsBase;
+import com.rastiq.arkemys.gui.settings.*;
 import com.rastiq.arkemys.gui.utils.GuiUtils;
 import com.rastiq.arkemys.gui.utils.blur.BlurShader;
+import com.rastiq.arkemys.mixins.client.renderer.IMixinEntityRenderer;
+import com.rastiq.arkemys.motionblur.MotionBlur;
 import com.rastiq.arkemys.splash.SplashProgress;
 import com.rastiq.arkemys.utils.*;
 import com.rastiq.arkemys.utils.Timer;
@@ -56,6 +56,8 @@ public class Client
     public static final Gson GSON = new Gson();
     public String rangeText = "Aucune attaque";
     public long lastAttack;
+    public boolean processMotionBlur = false;
+    public int lastMotionBlurValue = 0;
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -141,6 +143,40 @@ public class Client
         ModuleManager.INSTANCE.modules.stream().filter(module -> ModuleConfig.INSTANCE.isEnabled(module) && module.isRender()).forEach(module -> ((IModuleRenderer)module).render(BoxUtils.getBoxOffX(module, (int)ModuleConfig.INSTANCE.getActualX(module), ((IModuleRenderer)module).getWidth()), BoxUtils.getBoxOffY(module, (int)ModuleConfig.INSTANCE.getActualY(module), ((IModuleRenderer)module).getHeight())));
         Client.left.tick();
         Client.right.tick();
+        if (this.mc.currentScreen instanceof GuiModuleSettings) {
+            return;
+        }
+        if (processMotionBlur == false) {
+            if (ModuleConfig.INSTANCE.isEnabled(MotionBlurModule.INSTANCE)) {
+                processMotionBlur = true;
+                MotionBlur.instance.tick();
+                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue) {
+                    lastMotionBlurValue = MotionBlurModule.INSTANCE.intensity.getInt();
+                    ((IMixinEntityRenderer)this.mc.entityRenderer).callLoadShader(new ResourceLocation("motionblur", "motionblur"));
+                    mc.entityRenderer.getShaderGroup().createBindFramebuffers(mc.displayWidth, mc.displayHeight);
+                }
+            }else{
+                processMotionBlur = false;
+                if (mc.entityRenderer.getShaderGroup() != null) {
+                    mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+                }
+            }
+        }else{
+            if (ModuleConfig.INSTANCE.isEnabled(MotionBlurModule.INSTANCE)) {
+                processMotionBlur = true;
+                MotionBlur.instance.tick();
+                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue) {
+                    lastMotionBlurValue = MotionBlurModule.INSTANCE.intensity.getInt();
+                    ((IMixinEntityRenderer)this.mc.entityRenderer).callLoadShader(new ResourceLocation("motionblur", "motionblur"));
+                    mc.entityRenderer.getShaderGroup().createBindFramebuffers(mc.displayWidth, mc.displayHeight);
+                }
+            }else{
+                processMotionBlur = false;
+                if (mc.entityRenderer.getShaderGroup() != null) {
+                    mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+                }
+            }
+        }
     }
     
     public void onShutdown() {

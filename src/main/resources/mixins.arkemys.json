@@ -6,6 +6,7 @@
   "refmap": "mixins.arkemys.refmap.json",
   "verbose": true,
   "mixins": [
+    "accessor.MetadataSerializerAccessor",
     "accessor.SessionAccessor",
     "accessor.ShaderGroupAccessor",
     "accessor.SimpleReloadableResourceManagerAccessor",
