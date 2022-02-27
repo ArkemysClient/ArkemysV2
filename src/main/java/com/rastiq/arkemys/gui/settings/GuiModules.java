@@ -48,7 +48,6 @@ public class GuiModules extends SettingsBase
     }
     
     public void initGui(final boolean keepSearch) {
-        DiscordCheck.INSTANCE.rpcCheck = false;
         this.row = 1;
         this.column = 1;
         this.gap = this.getLayoutWidth(this.getMainWidth() / 6) / 8;

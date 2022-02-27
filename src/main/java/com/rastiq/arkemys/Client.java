@@ -21,6 +21,7 @@ import com.rastiq.arkemys.utils.*;
 import com.rastiq.arkemys.utils.Timer;
 import com.rastiq.arkemys.websockets.SocketClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
@@ -29,7 +30,6 @@ import net.minecraft.util.*;
 import net.minecraft.client.gui.*;
 
 import java.text.DecimalFormat;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.*;
 import org.apache.logging.log4j.*;
 import com.rastiq.arkemys.ias.Config;
@@ -59,6 +59,8 @@ public class Client
     public boolean processMotionBlur = false;
     public float lastMotionBlurValue = 0;
     public boolean hasLoadedConfig = false;
+    public boolean hasBlurredGui = false;
+    public KeyBinding guiKeyBind;
     
     public Client() {
         this.mc = Minecraft.getMinecraft();
@@ -87,7 +89,8 @@ public class Client
     }
     
     public void onKeyPress(final int keycode) {
-        if (Minecraft.getMinecraft().inGameHasFocus && keycode == 54) {
+        guiKeyBind = (KeyBinding) SettingsManager.INSTANCE.guiKeyBind.getObject();
+        if (Minecraft.getMinecraft().inGameHasFocus && keycode == guiKeyBind.getKeyCode()) {
             Minecraft.getMinecraft().displayGuiScreen((GuiScreen)((SettingsBase.lastWindow == null) ? new GuiModules(null) : SettingsBase.lastWindow));
         }
     }
@@ -119,15 +122,17 @@ public class Client
     }
 
     public void onAttack(Entity entity) {
-        if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && this.mc.objectMouseOver.entityHit.getEntityId() == entity.getEntityId()) {
-            Vec3 vec3 = this.mc.getRenderViewEntity().getPositionEyes(1.0F);
-            double range = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
-            this.rangeText = (new DecimalFormat("#.##")).format(range) + " blocks";
-        } else {
-            this.rangeText = "Pas sur la cible ?";
-        }
+        if (entity instanceof EntityPlayer) {
+            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && this.mc.objectMouseOver.entityHit.getEntityId() == entity.getEntityId()) {
+                Vec3 vec3 = this.mc.getRenderViewEntity().getPositionEyes(1.0F);
+                double range = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
+                this.rangeText = (new DecimalFormat("#.##")).format(range) + " blocks";
+            } else {
+                this.rangeText = "Pas sur la cible ?";
+            }
 
-        this.lastAttack = System.currentTimeMillis();
+            this.lastAttack = System.currentTimeMillis();
+        }
     }
     
     public void onRenderOverlay() {
@@ -155,8 +160,9 @@ public class Client
             if (ModuleConfig.INSTANCE.isEnabled(MotionBlurModule.INSTANCE)) {
                 processMotionBlur = true;
                 MotionBlur.instance.tick();
-                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue) {
+                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue || hasBlurredGui == true) {
                     lastMotionBlurValue = MotionBlurModule.INSTANCE.intensity.getInt();
+                    hasBlurredGui = false;
                     ((IMixinEntityRenderer)this.mc.entityRenderer).callLoadShader(new ResourceLocation("motionblur", "motionblur"));
                     mc.entityRenderer.getShaderGroup().createBindFramebuffers(mc.displayWidth, mc.displayHeight);
                 }
@@ -170,8 +176,9 @@ public class Client
             if (ModuleConfig.INSTANCE.isEnabled(MotionBlurModule.INSTANCE)) {
                 processMotionBlur = true;
                 MotionBlur.instance.tick();
-                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue) {
+                if (MotionBlurModule.INSTANCE.intensity.getInt() != lastMotionBlurValue || hasBlurredGui == true) {
                     lastMotionBlurValue = MotionBlurModule.INSTANCE.intensity.getInt();
+                    hasBlurredGui = false;
                     ((IMixinEntityRenderer)this.mc.entityRenderer).callLoadShader(new ResourceLocation("motionblur", "motionblur"));
                     mc.entityRenderer.getShaderGroup().createBindFramebuffers(mc.displayWidth, mc.displayHeight);
                 }

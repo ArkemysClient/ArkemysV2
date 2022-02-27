@@ -7,6 +7,7 @@ import java.awt.*;
 public class SettingsManager extends Module
 {
     public static final SettingsManager INSTANCE;
+    public final Setting guiKeyBind;
     public final Setting showName;
     public final Setting fixNametagRot;
     public final Setting borderlessWindow;
@@ -19,6 +20,7 @@ public class SettingsManager extends Module
     public SettingsManager() {
         super("Paramètres Généraux", -1, false);
         new Setting(this, "Options Générales");
+        this.guiKeyBind = new Setting(this, "Afficher l'interface").setDefault(new KeyBinding(54));
         this.showName = new Setting(this, "Montrer le nom en F5").setDefault(false);
         this.fixNametagRot = new Setting(this, "Fixer la rotation des nametags").setDefault(true);
         this.borderlessWindow = new Setting(this, "Fenêtre sans bords").setDefault(false);

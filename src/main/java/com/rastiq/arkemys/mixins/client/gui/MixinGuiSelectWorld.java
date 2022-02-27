@@ -17,6 +17,8 @@ public class MixinGuiSelectWorld {
             Client.INSTANCE.keepAliveTimer = null;
             Client.INSTANCE.hasSent = false;
         }
+        Client.INSTANCE.lastMotionBlurValue = 0;
+        Client.INSTANCE.processMotionBlur = false;
         DiscordIPC.INSTANCE.update("Dans les menus", "Menu solo");
     }
 }

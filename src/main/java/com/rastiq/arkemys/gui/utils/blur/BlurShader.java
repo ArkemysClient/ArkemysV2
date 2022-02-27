@@ -1,5 +1,6 @@
 package com.rastiq.arkemys.gui.utils.blur;
 
+import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.mixins.accessor.ShaderGroupAccessor;
 import com.rastiq.arkemys.mixins.accessor.SimpleReloadableResourceManagerAccessor;
 import com.rastiq.arkemys.mixins.client.renderer.IMixinEntityRenderer;
@@ -34,6 +35,7 @@ public class BlurShader
             ((IMixinEntityRenderer)this.mc.entityRenderer).callLoadShader(this.SHADER);
             this.start = System.currentTimeMillis();
         }
+        Client.INSTANCE.hasBlurredGui = true;
     }
     
     public void onGuiClose() {
