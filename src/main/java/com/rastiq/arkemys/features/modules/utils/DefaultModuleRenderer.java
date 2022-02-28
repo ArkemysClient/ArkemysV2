@@ -31,7 +31,7 @@ public abstract class DefaultModuleRenderer extends IModuleRenderer
         super(displayName, textureIndex);
         new Setting(this, "Options générales");
         this.background = new Setting(this, "Arrière plan").setDefault(true);
-        this.backgroundColor = new Setting(this, "Couleur d'arrière-plan").setDefault(new Color(0, 0, 0, 75).getRGB(), 0);
+        this.backgroundColor = new Setting(this, "Couleur").setDefault(new Color(0, 0, 0, 75).getRGB(), 0);
         this.backgroundWidth = new Setting(this, "Largeur").setDefault(5).setRange(2, 20, 1);
         this.backgroundHeight = new Setting(this, "Hauteur").setDefault(5).setRange(2, 12, 1);
         this.textShadow = new Setting(this, "Ombre des textes").setDefault(false);

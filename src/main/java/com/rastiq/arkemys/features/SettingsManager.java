@@ -29,7 +29,7 @@ public class SettingsManager extends Module
         this.chunkUpdates = new Setting(this, "Lazy Chunk Loading").setDefault(0).setRange("Éteint (Vanilla)", "Plus bas", "Bas", "Moyen", "Haut", "Plus haut");
         this.transparentNametags = new Setting(this, "Nametags transparents").setDefault(false);
         new Setting(this, "Style");
-        this.mainColor = new Setting(this, "Couleur de l'UI principale").setDefault(new Color(255,223,0).getRGB(), 0);
+        this.mainColor = new Setting(this, "Couleur de l'UI").setDefault(new Color(255,223,0).getRGB(), 0);
         this.buttonFont = new Setting(this, "Police de caractère personalisée").setDefault(true);
     }
     

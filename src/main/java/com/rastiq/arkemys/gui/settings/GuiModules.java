@@ -76,7 +76,7 @@ public class GuiModules extends SettingsBase
             modules.removeAll(toRemove);
         }
         super.initGui();
-        this.registerScroll(new Scroll(modules, this.width, this.height, this.height / 2 - this.getHeight() / 2 + 20, this.height / 2 + this.getHeight() / 2 - 45, 40, this.width / 2 + this.getWidth() / 2 - 4, this.columns));
+        this.registerScroll(new Scroll(modules, this.width, this.height, this.height / 2 - this.getHeight() / 2 + 20, this.height / 2 + this.getHeight() / 2 - 50, 40, this.width / 2 + this.getWidth() / 2 - 4, this.columns));
         this.setScrollState(GuiModules.scrollState);
         Keyboard.enableRepeatEvents(true);
     }
@@ -173,12 +173,22 @@ public class GuiModules extends SettingsBase
         private final int scrollbarX;
         private final int columns;
         private int expandedWidth;
+        private int scrollTop;
+        private int scrollBottom;
         
         public Scroll(final Set<?> list, final int width, final int height, final int topIn, final int bottomIn, final int slotHeightIn, final int scrollbarX, final int columns) {
             super(Minecraft.getMinecraft(), width, height, topIn, bottomIn, slotHeightIn);
             this.list = list;
             this.scrollbarX = scrollbarX;
             this.columns = columns;
+            if (Minecraft.getMinecraft().currentScreen instanceof GuiModules) {
+                this.scrollTop = this.top;
+                this.scrollBottom = this.bottom + 45;
+            }
+            if (Minecraft.getMinecraft().currentScreen instanceof GuiSettings || Minecraft.getMinecraft().currentScreen instanceof GuiModuleSettings) {
+                this.scrollTop = this.top + 10;
+                this.scrollBottom = this.bottom - 10;
+            }
         }
         
         public void expandBy(final int expandBy) {
@@ -196,13 +206,14 @@ public class GuiModules extends SettingsBase
         @Override
         public void drawScroll(final int i, final int j) {
             final int j2 = this.func_148135_f();
+
             if (j2 > 0) {
-                int height = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
-                height = MathHelper.clamp_int(height, 32, this.bottom - this.top - 8);
+                int height = (this.scrollBottom - this.scrollTop) * (this.scrollBottom - this.scrollTop) / this.getContentHeight();
+                height = MathHelper.clamp_int(height, 32, this.scrollBottom - this.scrollTop - 8);
                 height -= (int)Math.min((this.amountScrolled < 0.0) ? ((double)(int)(-this.amountScrolled)) : ((double)((this.amountScrolled > this.func_148135_f()) ? ((int)this.amountScrolled - this.func_148135_f()) : 0)), height * 0.75);
-                final int minY = Math.min(Math.max(this.getAmountScrolled() * (this.bottom - this.top - height) / this.func_148135_f() + this.top, this.top), this.bottom - height);
+                final int minY = Math.min(Math.max(this.getAmountScrolled() * (this.scrollBottom - this.scrollTop - height) / this.func_148135_f() + this.scrollTop, this.scrollTop), this.scrollBottom - height);
                 final Color c = new Color(255, 255, 255, 255);
-                GLRectUtils.drawRoundedRect(j - 5, this.top, j - 5 + 3, this.bottom - 1, 1.5f, new Color(0, 0, 0, 100).getRGB());
+                GLRectUtils.drawRoundedRect(j - 5, this.scrollTop, j - 5 + 3, this.scrollBottom - 1, 1.5f, new Color(0, 0, 0, 100).getRGB());
                 GLRectUtils.drawRoundedRect(j - 5, minY, j - 5 + 3, minY + height - 1, 1.5f, Client.getMainColor(150));
                 GLRectUtils.drawRoundedRect(j - 5, minY, j - 5 + 2.75f, minY + height - 1.25f, 1.5f, Client.getMainColor(255));
             }
