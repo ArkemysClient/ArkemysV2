@@ -6,9 +6,7 @@ import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.discord.DiscordIPC;
 import com.rastiq.arkemys.features.ModuleManager;
 import com.rastiq.arkemys.features.SettingsManager;
-import com.rastiq.arkemys.features.modules.HotbarModule;
-import com.rastiq.arkemys.features.modules.MotionBlurModule;
-import com.rastiq.arkemys.features.modules.PerspectiveModule;
+import com.rastiq.arkemys.features.modules.*;
 import com.rastiq.arkemys.features.modules.utils.CPSUtils;
 import com.rastiq.arkemys.features.modules.utils.IModuleRenderer;
 import com.rastiq.arkemys.gui.settings.*;
@@ -21,7 +19,6 @@ import com.rastiq.arkemys.utils.*;
 import com.rastiq.arkemys.utils.Timer;
 import com.rastiq.arkemys.websockets.SocketClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
@@ -54,8 +51,6 @@ public class Client
     public boolean hasSent = false;
     public Timer keepAliveTimer;
     public static final Gson GSON = new Gson();
-    public String rangeText = "Aucune attaque";
-    public long lastAttack;
     public boolean processMotionBlur = false;
     public float lastMotionBlurValue = 0;
     public boolean hasLoadedConfig = false;
@@ -122,22 +117,33 @@ public class Client
     }
 
     public void onAttack(Entity entity) {
-        if (entity instanceof EntityPlayer) {
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && this.mc.objectMouseOver.entityHit.getEntityId() == entity.getEntityId()) {
-                Vec3 vec3 = this.mc.getRenderViewEntity().getPositionEyes(1.0F);
-                double range = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
-                this.rangeText = (new DecimalFormat("#.##")).format(range) + " blocks";
-            } else {
-                this.rangeText = "Pas sur la cible ?";
-            }
+        if (ModuleConfig.INSTANCE.isEnabled(ReachDisplayModule.INSTANCE)) {
+            ReachDisplayModule.INSTANCE.onAttack(entity);
+        }
+        if (ModuleConfig.INSTANCE.isEnabled(ComboCounterMod.INSTANCE)) {
+            ComboCounterMod.INSTANCE.onAttack(entity);
+        }
+        if (ModuleConfig.INSTANCE.isEnabled(ParticleMultiplierModule.INSTANCE)) {
+            ParticleMultiplierModule.INSTANCE.onAttack(entity);
+        }
+    }
 
-            this.lastAttack = System.currentTimeMillis();
+    public void onDamage(Entity entity) {
+        if (ModuleConfig.INSTANCE.isEnabled(ComboCounterMod.INSTANCE)) {
+            ComboCounterMod.INSTANCE.onDamage(entity);
         }
     }
     
     public void onRenderOverlay() {
-        if (System.currentTimeMillis() - this.lastAttack > 2000L) {
-            this.rangeText = "Aucune attaque";
+        if (ModuleConfig.INSTANCE.isEnabled(ReachDisplayModule.INSTANCE)) {
+            if (System.currentTimeMillis() - ReachDisplayModule.INSTANCE.lastAttack > 2000L) {
+                ReachDisplayModule.INSTANCE.rangeText = "Aucune attaque";
+            }
+        }
+        if (ModuleConfig.INSTANCE.isEnabled(ComboCounterMod.INSTANCE)) {
+            if((System.currentTimeMillis() - ComboCounterMod.INSTANCE.hitTime) > 2000) {
+                ComboCounterMod.INSTANCE.combo = 0;
+            }
         }
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
             return;

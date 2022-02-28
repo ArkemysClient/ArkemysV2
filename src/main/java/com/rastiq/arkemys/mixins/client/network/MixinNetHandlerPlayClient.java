@@ -1,7 +1,9 @@
 package com.rastiq.arkemys.mixins.client.network;
 
+import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.features.modules.TimeChangerModule;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.play.*;
 import net.minecraft.client.network.*;
 import net.minecraft.client.*;
@@ -18,6 +20,16 @@ public abstract class MixinNetHandlerPlayClient implements INetHandlerPlayClient
 {
     @Shadow
     private Minecraft gameController;
+
+    @Shadow
+    private WorldClient clientWorldController;
+
+    @Inject(method = "handleEntityStatus", at = @At("RETURN"))
+    public void handleEntityStatus(S19PacketEntityStatus packetIn, CallbackInfo callback) {
+        if(packetIn.getOpCode() == 2) {
+            Client.INSTANCE.onDamage(packetIn.getEntity(clientWorldController));
+        }
+    }
     
     @Inject(method = { "handleTimeUpdate" }, at = { @At("HEAD") }, cancellable = true)
     private void handleTimeUpdate(final S03PacketTimeUpdate packetIn, final CallbackInfo ci) {
