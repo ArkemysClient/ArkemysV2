@@ -9,6 +9,7 @@ import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.*;
 import com.rastiq.arkemys.features.modules.utils.CPSUtils;
 import com.rastiq.arkemys.features.modules.utils.IModuleRenderer;
+import com.rastiq.arkemys.gui.GuiConfirmDisconnect;
 import com.rastiq.arkemys.gui.settings.*;
 import com.rastiq.arkemys.gui.utils.GuiUtils;
 import com.rastiq.arkemys.gui.utils.blur.BlurShader;
@@ -153,7 +154,7 @@ public class Client
         }
         HotbarModule.INSTANCE.onTick();
         BlurShader.INSTANCE.onRenderTick();
-        if (this.mc.currentScreen instanceof GuiModules || this.mc.currentScreen instanceof GuiSettings) {
+        if (this.mc.currentScreen instanceof GuiModules || this.mc.currentScreen instanceof GuiSettings || this.mc.currentScreen instanceof GuiConfirmDisconnect) {
             return;
         }
         ModuleManager.INSTANCE.modules.stream().filter(module -> ModuleConfig.INSTANCE.isEnabled(module) && module.isRender()).forEach(module -> ((IModuleRenderer)module).render(BoxUtils.getBoxOffX(module, (int)ModuleConfig.INSTANCE.getActualX(module), ((IModuleRenderer)module).getWidth()), BoxUtils.getBoxOffY(module, (int)ModuleConfig.INSTANCE.getActualY(module), ((IModuleRenderer)module).getHeight())));
