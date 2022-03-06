@@ -43,7 +43,7 @@ public class NametagRenderer
             final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             final int i = fontrenderer.getStringWidth(tag) / 2;
             Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
-            Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(mc.getSession().getUsername()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
+            Gui.drawModalRectWithCustomSizedTexture(-fontrenderer.getStringWidth(entity.getDisplayName().getFormattedText()) / 2 - 12, -2, 10, 10, 10, 10, 10, 10);
             if (!SettingsManager.INSTANCE.transparentNametags.getBoolean()) {
                 GlStateManager.disableTexture2D();
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
