@@ -58,7 +58,7 @@ public abstract class MixinRender<T extends Entity>
 
             if (entityIn instanceof AbstractClientPlayer) {
                 if (entityIn.ticksExisted > 20) {
-                    if (str == ((AbstractClientPlayer) entityIn).getGameProfile().getName()) {
+                    if (str == entityIn.getDisplayName().getFormattedText()) {
                         if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
                             if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getGameProfile().getName()) == true) {
                                 Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));

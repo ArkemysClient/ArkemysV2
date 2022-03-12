@@ -136,16 +136,6 @@ public class Client
     }
     
     public void onRenderOverlay() {
-        if (ModuleConfig.INSTANCE.isEnabled(ReachDisplayModule.INSTANCE)) {
-            if (System.currentTimeMillis() - ReachDisplayModule.INSTANCE.lastAttack > 2000L) {
-                ReachDisplayModule.INSTANCE.rangeText = "Aucune attaque";
-            }
-        }
-        if (ModuleConfig.INSTANCE.isEnabled(ComboCounterMod.INSTANCE)) {
-            if((System.currentTimeMillis() - ComboCounterMod.INSTANCE.hitTime) > 2000) {
-                ComboCounterMod.INSTANCE.combo = 0;
-            }
-        }
         if (this.mc.gameSettings.showDebugInfo || this.mc.currentScreen instanceof GuiHUDEditor) {
             return;
         }

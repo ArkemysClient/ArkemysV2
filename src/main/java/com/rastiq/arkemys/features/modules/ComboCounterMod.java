@@ -18,9 +18,10 @@ public class ComboCounterMod extends DefaultModuleRenderer
 
     @Override
     public Object getValue() {
-        if (combo == 0) {
-            return "Aucun combo";
+        if((System.currentTimeMillis() - ComboCounterMod.INSTANCE.hitTime) > 2000) {
+            combo = 0;
         }
+        if (combo == 0) return "Aucun combo";
         return combo + " coup" + ((combo > 1) ? "s" : "");
     }
 

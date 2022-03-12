@@ -14,8 +14,9 @@ import java.text.DecimalFormat;
 public class ReachDisplayModule extends DefaultModuleRenderer
 {
     public static ReachDisplayModule INSTANCE;
-    public String rangeText = "Aucune attaque";
-    public long lastAttack;
+    private double distance = 0;
+    private long hitTime = -1;
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
     public ReachDisplayModule() {
         super("ReachDisplay", 14);
@@ -24,7 +25,12 @@ public class ReachDisplayModule extends DefaultModuleRenderer
 
     @Override
     public Object getValue() {
-        return this.rangeText;
+        if((System.currentTimeMillis() - hitTime) > 2000) {
+            distance = 0;
+            return "Aucune attaque";
+        }else {
+            return FORMAT.format(distance) + " block" + (distance != 1.0 ? "s" : "");
+        }
     }
 
     @Override
@@ -39,15 +45,12 @@ public class ReachDisplayModule extends DefaultModuleRenderer
 
     public void onAttack(Entity entity) {
         if (entity instanceof EntityPlayer) {
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && this.mc.objectMouseOver.entityHit.getEntityId() == entity.getEntityId()) {
-                Vec3 vec3 = this.mc.getRenderViewEntity().getPositionEyes(1.0F);
-                double range = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
-                this.rangeText = (new DecimalFormat("#.##")).format(range) + " blocks";
-            } else {
-                this.rangeText = "Pas sur la cible ?";
+            if(mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
+                distance = mc.objectMouseOver.hitVec.distanceTo(mc.thePlayer.getPositionEyes(1.0F));
+                hitTime = System.currentTimeMillis();
             }
 
-            this.lastAttack = System.currentTimeMillis();
+            hitTime = System.currentTimeMillis();
         }
     }
 }
