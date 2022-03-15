@@ -1,5 +1,6 @@
 package com.rastiq.arkemys.mixins.client.renderer.entity;
 
+import com.rastiq.arkemys.Client;
 import com.rastiq.arkemys.config.ModuleConfig;
 import com.rastiq.arkemys.features.SettingsManager;
 import com.rastiq.arkemys.features.modules.PerspectiveModule;
@@ -58,7 +59,7 @@ public abstract class MixinRender<T extends Entity>
 
             if (entityIn instanceof AbstractClientPlayer) {
                 if (entityIn.ticksExisted > 20) {
-                    if (str == entityIn.getDisplayName().getFormattedText()) {
+                    if (str == entityIn.getDisplayName().getUnformattedText()) {
                         if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
                             if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getGameProfile().getName()) == true) {
                                 Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
