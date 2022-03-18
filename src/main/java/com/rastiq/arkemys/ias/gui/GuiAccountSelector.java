@@ -281,9 +281,18 @@ public class GuiAccountSelector extends GuiScreen {
 			if (empty()) return;
 			Account acc = entries.get(selectedElement).account;
 			acc.use();
-			((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session(acc.alias(), UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
-			Client.INSTANCE.hasSent = false;
-			mc.displayGuiScreen(prev);
+			acc.login(mc, t -> {
+				Client.INSTANCE.hasSent = false;
+				if (t == null) {
+					mc.displayGuiScreen(prev);
+				} else if (t instanceof AuthException) {
+					Client.warn("Unable to login", t);
+					error = ((AuthException) t).getText().getFormattedText();
+				} else {
+					Client.warn("Unable to login", t);
+					error = "Inconnu: " + t.toString();
+				}
+			});
 		}
 		
 		public void edit() {

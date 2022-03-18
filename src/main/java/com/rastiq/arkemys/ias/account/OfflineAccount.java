@@ -1,8 +1,12 @@
 package com.rastiq.arkemys.ias.account;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
+import com.mojang.util.UUIDTypeAdapter;
+import com.rastiq.arkemys.mixins.accessor.SessionAccessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Session;
 
 public class OfflineAccount implements Account {
 	private String username;
@@ -20,7 +24,13 @@ public class OfflineAccount implements Account {
 
 	@Override
 	public void login(Minecraft mc, Consumer<Throwable> handler) {
-		throw new UnsupportedOperationException("Account not online");
+		new Thread(() -> {
+			mc.addScheduledTask(() -> {
+				((SessionAccessor) Minecraft.getMinecraft()).setSession(new Session(alias(), UUIDTypeAdapter.fromUUID(new UUID(0, 0)), "0", "legacy"));
+				handler.accept(null);
+			});
+		}, "Crack Reauth Thread").start();
+
 	}
 
 	@Override
