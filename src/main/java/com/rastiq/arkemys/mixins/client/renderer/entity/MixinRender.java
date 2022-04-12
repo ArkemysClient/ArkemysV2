@@ -59,7 +59,7 @@ public abstract class MixinRender<T extends Entity>
 
             if (entityIn instanceof AbstractClientPlayer) {
                 if (entityIn.ticksExisted > 20) {
-                    if (str == entityIn.getDisplayName().getUnformattedText()) {
+                    if (str.contains(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
                         if (NameIconRenderer.INSTANCE.hasRenderedIcons.containsKey(((AbstractClientPlayer) entityIn).getGameProfile().getName())) {
                             if (NameIconRenderer.INSTANCE.isUsingArkemys.get(((AbstractClientPlayer) entityIn).getGameProfile().getName()) == true) {
                                 Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("arkemys/nametags/icon.png"));
@@ -82,6 +82,8 @@ public abstract class MixinRender<T extends Entity>
 
             if (NameIconRenderer.INSTANCE.hasFinished() == true) {
                 NameIconRenderer.INSTANCE.hasRenderedIcons.clear();
+                NameIconRenderer.INSTANCE.isUsingArkemys.clear();
+                System.out.println(NameIconRenderer.INSTANCE.hasRenderedIcons);
             }
 
             if (str.equals("deadmau5")) {
