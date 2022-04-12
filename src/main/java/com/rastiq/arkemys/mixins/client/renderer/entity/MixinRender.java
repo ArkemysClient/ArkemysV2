@@ -83,7 +83,6 @@ public abstract class MixinRender<T extends Entity>
             if (NameIconRenderer.INSTANCE.hasFinished() == true) {
                 NameIconRenderer.INSTANCE.hasRenderedIcons.clear();
                 NameIconRenderer.INSTANCE.isUsingArkemys.clear();
-                System.out.println(NameIconRenderer.INSTANCE.hasRenderedIcons);
             }
 
             if (str.equals("deadmau5")) {
